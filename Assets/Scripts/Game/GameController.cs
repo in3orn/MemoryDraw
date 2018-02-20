@@ -2,6 +2,8 @@
 using UnityEngine;
 using UnityEngine.Events;
 using Dev.Krk.MemoryDraw.Game.State;
+using Dev.Krk.MemoryDraw.Data.Initializers;
+using Dev.Krk.MemoryDraw.Data;
 
 namespace Dev.Krk.MemoryDraw.Game
 {
@@ -22,6 +24,9 @@ namespace Dev.Krk.MemoryDraw.Game
 
         [SerializeField]
         private LivesController livesController;
+
+        [SerializeField]
+        private GroupsDataInitializer groupsDataInitializer;
 
 
         void Start()
@@ -51,6 +56,7 @@ namespace Dev.Krk.MemoryDraw.Game
 
         public void StartNewRun()
         {
+            progressController.StartDrawing(0, 0); //TODO group and drawing taken from GUI (drawing button)
             ResetLevel();
             StartLevel();
         }
@@ -58,8 +64,6 @@ namespace Dev.Krk.MemoryDraw.Game
 
         public void ProcessLevelFailed()
         {
-            progressController.ResetFlow(scoreController.Level);
-
             if (OnLevelFailed != null) OnLevelFailed();
         }
 
@@ -68,23 +72,23 @@ namespace Dev.Krk.MemoryDraw.Game
             scoreController.IncreaseScore();
             progressController.NextMap();
 
-            if (progressController.IsFlowCompleted())
+            if (progressController.IsDrawingCompleted())
             {
                 levelController.CompleteFlow();
             }
             else
             {
-                StartCoroutine(StartLevelWithDelay());
+                StartCoroutine(StartWithDelay());
             }
         }
 
         private void ProcessFlowCompleted()
         {
-            progressController.NextFlow(scoreController.Level);
+            progressController.FinishDrawing();
             if (OnFlowCompleted != null) OnFlowCompleted();
         }
 
-        private IEnumerator StartLevelWithDelay()
+        private IEnumerator StartWithDelay()
         {
             yield return new WaitForSeconds(1.5f);
             StartLevel();
@@ -92,7 +96,7 @@ namespace Dev.Krk.MemoryDraw.Game
 
         public void ProcessPlayerDied()
         {
-            if (progressController.Flow > 0)
+            if (progressController.Drawing > 0)
             {
                 livesController.DecreaseLives();
                 if (livesController.Lives <= 0)
@@ -111,7 +115,14 @@ namespace Dev.Krk.MemoryDraw.Game
         private void StartLevel()
         {
             levelController.Clear();
-            levelController.Init(progressController.Flow, progressController.Map);
+            levelController.Init(GetMapData(progressController.Group, progressController.Drawing, progressController.Map));
+        }
+
+        private MapData GetMapData(int group, int drawing, int map)
+        {
+            GroupData groupData = groupsDataInitializer.Data.Groups[group];
+            DrawingData drawingData = groupData.Drawings[drawing];
+            return drawingData.Maps[map];
         }
 
         public void MoveLeft()

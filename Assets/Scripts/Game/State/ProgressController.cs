@@ -6,23 +6,35 @@ namespace Dev.Krk.MemoryDraw.Game.State
 {
     public class ProgressController : MonoBehaviour
     {
-        private readonly string FLOW = "Flow";
+        private readonly string GROUP = "Group";
+
+        private readonly string DRAWING = "Drawing";
+
+        private readonly string MAP = "Map";
 
         [SerializeField]
-        private FlowsDataInitializer flowsDataController;
+        private GroupsDataInitializer groupsDataInitializer;
 
-        private int flow;
+
+        private int group;
+
+        private int drawing;
 
         private int map;
 
-        public int Flow { get { return flow; } }
+
+        public int Group { get { return group; } }
+
+        public int Drawing { get { return drawing; } }
 
         public int Map { get { return map; } }
+
 
         void Start()
         {
             LoadData();
         }
+
 
         void OnApplicationPause(bool pauseStatus)
         {
@@ -37,17 +49,24 @@ namespace Dev.Krk.MemoryDraw.Game.State
         
         private void SaveData()
         {
-            PlayerPrefs.SetInt(FLOW, flow);
+            PlayerPrefs.SetInt(GROUP, group);
+            PlayerPrefs.SetInt(DRAWING, drawing);
+            PlayerPrefs.SetInt(MAP, map);
         }
 
         private void LoadData()
         {
-            flow = PlayerPrefs.GetInt(FLOW);
+            group = PlayerPrefs.GetInt(GROUP);
+            drawing = PlayerPrefs.GetInt(DRAWING);
+            map = PlayerPrefs.GetInt(MAP);
         }
 
-        public bool IsFlowCompleted()
+
+        public void StartDrawing(int group, int drawing)
         {
-            return map == flowsDataController.Data.Flows[flow].Levels.Length;
+            this.group = group;
+            this.drawing = drawing;
+            map = 0;
         }
 
         public void NextMap()
@@ -55,19 +74,16 @@ namespace Dev.Krk.MemoryDraw.Game.State
             map++;
         }
 
-        public void NextFlow(int level)
+        public bool IsDrawingCompleted()
         {
-            int max = Mathf.Min(flowsDataController.Data.Flows.Length - 1, level + 1);
-            if (flow < max) flow++;
-            map = 0;
+            return map == groupsDataInitializer.Data.Groups[group].Drawings[drawing].Maps.Length;
         }
 
-        public void ResetFlow(int level)
+        public void FinishDrawing()
         {
-            int min = Mathf.Max(1, level - 1);
-            if (flow > min) flow--;
-            else flow = min;
-            map = 0;
+            group = -1;
+            drawing = -1;
+            map = -1;
         }
     }
 }

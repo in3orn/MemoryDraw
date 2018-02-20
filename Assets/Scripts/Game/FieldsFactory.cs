@@ -27,7 +27,7 @@ public class FieldsFactory : MonoBehaviour
                 InitThemeSprites(instance);
 
                 Field field = instance.GetComponent<Field>();
-                InitField(field, offset.x + x ,offset.y + y, fieldType, fieldTypes[y, x] > 0);
+                InitField(field, offset.x + x, offset.y + y, fieldType, fieldTypes[y, x] > 0);
                 fields[y, x] = field;
             }
         }
@@ -53,7 +53,7 @@ public class FieldsFactory : MonoBehaviour
     private void InitThemeSprites(GameObject instance)
     {
         ThemeSprite[] themeSprites = instance.GetComponentsInChildren<ThemeSprite>();
-        foreach(var sprite in themeSprites)
+        foreach (var sprite in themeSprites)
         {
             sprite.Controller = themeController;
         }

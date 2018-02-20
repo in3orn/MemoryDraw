@@ -3,8 +3,8 @@
 namespace Dev.Krk.MemoryDraw.Data
 {
     [Serializable]
-    public class ShapesData
+    public class GroupData
     {
-        public ShapeData[] Shapes;
+        public DrawingData[] Drawings;
     }
 }

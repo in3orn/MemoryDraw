@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
-using System.Collections;
 using System.Collections.Generic;
 using Dev.Krk.MemoryDraw.Game.Level;
 using Dev.Krk.MemoryDraw.Game.Animations;
-using Dev.Krk.MemoryDraw.Game.State;
+using Dev.Krk.MemoryDraw.Data;
 
 //TODO refactor - to much responsibilities
 namespace Dev.Krk.MemoryDraw.Game
@@ -61,12 +60,15 @@ namespace Dev.Krk.MemoryDraw.Game
         private Queue<Vector2> queuedMoves;
 
         private Queue<Field> queuedFields;
-
-        private Vector2 offset;
+        
 
         private List<Field> oldHorizontalFields;
 
         private List<Field> oldVerticalFields;
+
+
+        private Vector2 offset;
+
 
         public int HorizontalLength
         {
@@ -78,7 +80,9 @@ namespace Dev.Krk.MemoryDraw.Game
             get { return fieldMap.VerticalLength; }
         }
 
+
         public StateEnum State { get { return state; } }
+
 
         void Awake()
         {
@@ -88,6 +92,7 @@ namespace Dev.Krk.MemoryDraw.Game
             oldHorizontalFields = new List<Field>();
             oldVerticalFields = new List<Field>();
         }
+
 
         void OnEnable()
         {
@@ -116,19 +121,18 @@ namespace Dev.Krk.MemoryDraw.Game
             }
         }
 
-        public void Init(int flow, int level)
+
+        public void Init(MapData mapData)
         {
-            if (level == 0)
-            {
-                player.Init(Vector2.zero, fieldMap.ShowInterval, fieldMap.HideInterval);
-                playerActualPosition = player.transform.position;
-                offset = Vector2.zero;
-            }
+            offset = new Vector2(mapData.Offset.X, mapData.Offset.Y);
+            fieldMap.Init(levelProvider.GetMapData(mapData), offset);
 
-            fieldMap.Init(levelProvider.GetMapData(flow, level), offset);
+            Vector2 playerPosition = (offset + new Vector2(mapData.Start.X, mapData.Start.Y)) * Field.SIZE;
+            player.Init(playerPosition, fieldMap.ShowInterval, fieldMap.HideInterval);
+            playerActualPosition = player.transform.position;
 
-            Vector2 mapEnd = offset + new Vector2(fieldMap.HorizontalLength, fieldMap.VerticalLength);
-            finish.Init(mapEnd * Field.SIZE, fieldMap.ShowInterval, fieldMap.HideInterval);
+            Vector2 finishPosition = (offset + new Vector2(mapData.Finish.X, mapData.Finish.Y)) * Field.SIZE;
+            finish.Init(finishPosition, fieldMap.ShowInterval, fieldMap.HideInterval);
 
             queuedFields.Clear();
             queuedMoves.Clear();
@@ -164,13 +168,7 @@ namespace Dev.Krk.MemoryDraw.Game
 
         public void Clear()
         {
-            if (fieldMap.HorizontalFields != null)
-            {
-                offset.x += fieldMap.HorizontalLength;
-                offset.y += fieldMap.VerticalLength;
-
-                fieldMap.Clear();
-            }
+            fieldMap.Clear();
         }
 
         private void MoveToOld(Field[,] fields, List<Field> oldFields)
@@ -197,7 +195,7 @@ namespace Dev.Krk.MemoryDraw.Game
 
         private void InitCenter()
         {
-            center.transform.position = (offset + new Vector2(fieldMap.HorizontalLength, fieldMap.VerticalLength) * 0.5f) * Field.SIZE;
+            center.transform.position = (player.transform.position + finish.transform.position) * 0.5f;
         }
 
         public bool CanMoveLeft()
@@ -388,8 +386,8 @@ namespace Dev.Krk.MemoryDraw.Game
 
             MoveToOld(fieldMap.HorizontalFields, oldHorizontalFields);
             MoveToOld(fieldMap.VerticalFields, oldVerticalFields);
-
-            int size = fieldMap.HorizontalLength + fieldMap.VerticalLength + (int)offset.x + (int)offset.y + 1;
+            
+            int size = fieldMap.HorizontalLength + fieldMap.VerticalLength + (int)offset.x + (int)offset.y + 1; //TODO calculate max
             levelAnimator.FailLevel(oldHorizontalFields, oldVerticalFields, size);
 
             fieldMap.HideNotValid();
@@ -403,7 +401,7 @@ namespace Dev.Krk.MemoryDraw.Game
 
         public void CompleteFlow()
         {
-            int size = fieldMap.HorizontalLength + fieldMap.VerticalLength + (int)offset.x + (int)offset.y + 1;
+            int size = fieldMap.HorizontalLength + fieldMap.VerticalLength + (int)offset.x + (int)offset.y + 1; //TODO calculate max
             levelAnimator.CompleteFlow(oldHorizontalFields, oldVerticalFields, size);
 
             center.transform.position = Vector3.zero;

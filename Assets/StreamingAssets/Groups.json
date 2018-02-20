@@ -1,0 +1,57 @@
+{
+	"Groups": [{
+		"Drawings": [{
+			"Name": "Christmas tree",
+			"Maps":[{
+				"Start": {
+					"X": 1,
+					"Y": 0
+				},
+				"Finish": {
+					"X": 3,
+					"Y": 3
+				},
+				"Offset": {
+					"X": 0,
+					"Y": 0
+				},
+				"HorizontalFields": [
+					{"Fields": [0, 0, 0]},
+					{"Fields": [0, 1, 0]},
+					{"Fields": [0, 0, 1]},
+					{"Fields": [0, 0, 0]}
+				],
+				"VerticalFields": [
+					{"Fields": [0, 1, 0, 0]},
+					{"Fields": [0, 0, 1, 0]},
+					{"Fields": [0, 0, 0, 1]}
+				]
+			},
+			{
+				"Start": {
+					"X": 0,
+					"Y": 3
+				},
+				"Finish": {
+					"X": 3,
+					"Y": 0
+				},
+				"Offset": {
+					"X": 3,
+					"Y": 0
+				},
+				"HorizontalFields": [
+					{"Fields": [0, 0, 0]},
+					{"Fields": [0, 0, 1]},
+					{"Fields": [0, 1, 0]},
+					{"Fields": [1, 0, 0]}
+				],
+				"VerticalFields": [
+					{"Fields": [0, 0, 0, 1]},
+					{"Fields": [0, 0, 1, 0]},
+					{"Fields": [0, 1, 0, 0]}
+				]
+			}]
+		}]
+	}]
+}

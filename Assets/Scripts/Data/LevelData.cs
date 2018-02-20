@@ -3,11 +3,8 @@
 namespace Dev.Krk.MemoryDraw.Data
 {
     [Serializable]
-    public class LevelData
+    public class GroupsData
     {
-        public int Width;
-        public int Height;
-        public float MinDifficulty;
-        public float MaxDifficulty;
+        public GroupData[] Groups;
     }
 }

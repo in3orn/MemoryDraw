@@ -5,6 +5,6 @@ namespace Dev.Krk.MemoryDraw.Data
     [Serializable]
     public class FlowsData
     {
-        public FlowData[] Flows;
+        public GroupData[] Flows;
     }
 }

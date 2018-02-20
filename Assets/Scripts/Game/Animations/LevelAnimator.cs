@@ -26,11 +26,6 @@ namespace Dev.Krk.MemoryDraw.Game.Animations
         private float breakInterval;
 
 
-        [Header("Dependencies")]
-        [SerializeField]
-        private ShapeProvider shapeProvider;
-
-
         private List<Field> updated;
 
 
@@ -46,52 +41,14 @@ namespace Dev.Krk.MemoryDraw.Game.Animations
         }
 
         private IEnumerator AnimateShape(List<Field> horizontalFields, List<Field> verticalFields, int size)
-        {
-            yield return ShowShape(horizontalFields, verticalFields, size);
-            
+        {   
             yield return new WaitForSeconds(showDuration);
             
             yield return HideShape(horizontalFields, verticalFields, size);
+
+            //TODO end game animation -> show drawn image
         }
-
-        private IEnumerator ShowShape(List<Field> horizontalFields, List<Field> verticalFields, int size)
-        {
-            updated.Clear();
-
-            ShapeData shapeData = shapeProvider.GetShapeData(horizontalFields.Count, verticalFields.Count);
-
-            int hor = 0;
-            int ver = 0;
-
-            for (int s = size - 1; s > 0; s--)
-            {
-                for (int ds = 0; ds < s; ds++)
-                {
-                    int y = ds;
-                    int x = s - ds - 1;
-
-                    foreach (var field in horizontalFields)
-                    {
-                        if (CanUpdate(field, x, y))
-                        {
-                            updated.Add(field);
-                            Move(field, shapeData.HorizontalFields[hor++ % shapeData.HorizontalFields.Length]);
-                        }
-                    }
-
-                    foreach (var field in verticalFields)
-                    {
-                        if (CanUpdate(field, x, y))
-                        {
-                            updated.Add(field);
-                            Move(field, shapeData.VerticalFields[ver++ % shapeData.VerticalFields.Length]);
-                        }
-                    }
-                }
-                yield return new WaitForSeconds(showInterval / size);
-            }
-        }
-
+        
         private IEnumerator HideShape(List<Field> horizontalFields, List<Field> verticalFields, int size)
         {
             updated.Clear();
