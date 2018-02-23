@@ -4,7 +4,9 @@ using UnityEngine.Events;
 using Dev.Krk.MemoryDraw.Game;
 using Dev.Krk.MemoryDraw.Game.State;
 using Dev.Krk.MemoryDraw.Summary;
-using Dev.Krk.MemoryDraw.Resources;
+using Dev.Krk.MemoryDraw.Data.Initializers;
+using Dev.Krk.MemoryDraw.GUI.Buttons;
+using Dev.Krk.MemoryDraw.Game.Drawing;
 
 namespace Dev.Krk.MemoryDraw.State
 {
@@ -12,8 +14,10 @@ namespace Dev.Krk.MemoryDraw.State
     {
         public enum StateEnum
         {
-            Gameplay = 0,
-            Summary,
+            Idle = 0,
+            Gameplay,
+            Groups,
+            Drawings,
             Settings
         }
 
@@ -23,7 +27,7 @@ namespace Dev.Krk.MemoryDraw.State
 
         private delegate void StateChangeAction();
 
-        
+
         [Header("Settings")]
         [SerializeField]
         private float menuDelay;
@@ -53,12 +57,40 @@ namespace Dev.Krk.MemoryDraw.State
         [SerializeField]
         private ResourcesInitializer initializer;
 
+
+        [Header("Dependencies")]
         [SerializeField]
         private ScoreController scoreController;
 
         [SerializeField]
+        private DrawingController drawingController;
+
+        [SerializeField]
         private ProgressController progressController;
 
+        [SerializeField]
+        private GroupButtonsController groupButtonsController;
+
+        [SerializeField]
+        private DrawingButtonsController drawingButtonsController;
+
+
+        private StateEnum state;
+
+        private int currentGroup;
+
+
+        private StateEnum State
+        {
+            set
+            {
+                if (state != value)
+                {
+                    state = value;
+                    OnStateChanged(state);
+                }
+            }
+        }
 
         void OnEnable()
         {
@@ -66,6 +98,10 @@ namespace Dev.Krk.MemoryDraw.State
 
             game.OnFlowCompleted += ProcessFlowCompleted;
             game.OnLevelFailed += ProcessLevelFailed;
+
+            groupButtonsController.OnClicked += ProcessGroupButtonClicked;
+
+            drawingButtonsController.OnClicked += ProcessDrawingButtonClicked;
         }
 
         void OnDisable()
@@ -80,6 +116,17 @@ namespace Dev.Krk.MemoryDraw.State
                 game.OnFlowCompleted -= ProcessFlowCompleted;
                 game.OnLevelFailed -= ProcessLevelFailed;
             }
+
+            if (groupButtonsController != null)
+            {
+                groupButtonsController.OnClicked -= ProcessGroupButtonClicked;
+            }
+
+
+            if (drawingButtonsController != null)
+            {
+                drawingButtonsController.OnClicked -= ProcessDrawingButtonClicked;
+            }
         }
 
         void Start()
@@ -89,48 +136,64 @@ namespace Dev.Krk.MemoryDraw.State
 
         public void PlayGame()
         {
-            StartCoroutine(ChangeState(StateEnum.Gameplay, game.StartNewRun, menuDelay));
+            State = StateEnum.Gameplay;
+            game.StartNewRun();
         }
 
-        public void ShowSummary()
+        public void ShowGroups()
         {
-            StartCoroutine(ChangeState(StateEnum.Summary, summary.Show, menuDelay));
+            State = StateEnum.Groups;
         }
 
         public void ShowSettings()
         {
-            StartCoroutine(ChangeState(StateEnum.Settings, settings.Show, menuDelay));
+            State = StateEnum.Settings;
         }
 
         private void ProcessFlowCompleted()
         {
-            StartCoroutine(ChangeState(StateEnum.Summary, summary.Show, flowCompletedDelay));
+            StartCoroutine(ChangeState(StateEnum.Drawings, null, flowCompletedDelay));
         }
 
         private void ProcessLevelFailed()
         {
-            StartCoroutine(ChangeState(StateEnum.Summary, summary.Show, levelFailedDelay));
+            StartCoroutine(ChangeState(StateEnum.Drawings, summary.Show, levelFailedDelay));
         }
 
         private void ProcessResourcesInitialized()
         {
-            if (scoreController.Level > 0)
+            if (true)//scoreController.Level > 0)
             {
-                StartCoroutine(ChangeState(StateEnum.Summary, summary.Show, 0f));
+                State = StateEnum.Groups;
             }
             else
             {
+                drawingController.SetDrawing(0, 0);
+                progressController.StartDrawing(0, 0);
                 PlayGame();
             }
+        }
+
+        private void ProcessGroupButtonClicked(int id)
+        {
+            currentGroup = id;
+            drawingButtonsController.Init(currentGroup);
+            State = StateEnum.Drawings;
+        }
+
+        private void ProcessDrawingButtonClicked(int id)
+        {
+            drawingController.SetDrawing(currentGroup, id);
+            progressController.StartDrawing(currentGroup, id);
+            PlayGame();
         }
 
         private IEnumerator ChangeState(StateEnum state, StateChangeAction action, float delay)
         {
             if (delay > 0f) yield return new WaitForSeconds(delay);
 
-            action();
-
-            if (OnStateChanged != null) OnStateChanged(state);
+            State = state;
+            if (action != null) action();
         }
     }
 }

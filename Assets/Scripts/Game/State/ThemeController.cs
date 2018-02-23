@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using Dev.Krk.MemoryDraw.Data;
-using Dev.Krk.MemoryDraw.Resources;
+using Dev.Krk.MemoryDraw.Data.Initializers;
 
 namespace Dev.Krk.MemoryDraw.Game.State
 {

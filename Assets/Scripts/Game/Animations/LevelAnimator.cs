@@ -1,4 +1,5 @@
 ﻿using Dev.Krk.MemoryDraw.Data;
+using Dev.Krk.MemoryDraw.Game.Drawing;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,9 @@ namespace Dev.Krk.MemoryDraw.Game.Animations
 
         [SerializeField]
         private float hideInterval;
+
+        [SerializeField]
+        private DrawingController drawing;
 
 
         [Header("Fail Level Settings")]
@@ -41,12 +45,16 @@ namespace Dev.Krk.MemoryDraw.Game.Animations
         }
 
         private IEnumerator AnimateShape(List<Field> horizontalFields, List<Field> verticalFields, int size)
-        {   
+        {
+            drawing.Show();
+
             yield return new WaitForSeconds(showDuration);
             
             yield return HideShape(horizontalFields, verticalFields, size);
 
-            //TODO end game animation -> show drawn image
+            yield return new WaitForSeconds(showDuration);
+
+            drawing.Hide();
         }
         
         private IEnumerator HideShape(List<Field> horizontalFields, List<Field> verticalFields, int size)

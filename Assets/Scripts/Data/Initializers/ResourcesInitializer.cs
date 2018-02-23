@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace Dev.Krk.MemoryDraw.Resources
+namespace Dev.Krk.MemoryDraw.Data.Initializers
 {
     public class ResourcesInitializer : MonoBehaviour
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Dev.Krk.MemoryDraw.Resources
+namespace Dev.Krk.MemoryDraw.Data.Initializers
 {
     public class CompoundResourcesInitializer : ResourcesInitializer
     {

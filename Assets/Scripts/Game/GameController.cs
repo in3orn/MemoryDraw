@@ -56,7 +56,6 @@ namespace Dev.Krk.MemoryDraw.Game
 
         public void StartNewRun()
         {
-            progressController.StartDrawing(0, 0); //TODO group and drawing taken from GUI (drawing button)
             ResetLevel();
             StartLevel();
         }
@@ -96,13 +95,9 @@ namespace Dev.Krk.MemoryDraw.Game
 
         public void ProcessPlayerDied()
         {
-            if (progressController.Drawing > 0)
+            if (livesController.Lives > 0)
             {
                 livesController.DecreaseLives();
-                if (livesController.Lives <= 0)
-                {
-                    levelController.FailLevel();
-                }
             }
         }
 

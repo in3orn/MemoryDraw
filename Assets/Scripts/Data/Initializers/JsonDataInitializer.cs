@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.IO;
-using Dev.Krk.MemoryDraw.Resources;
 
 namespace Dev.Krk.MemoryDraw.Data.Initializers
 {
