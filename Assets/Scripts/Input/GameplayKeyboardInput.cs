@@ -3,13 +3,8 @@ using Dev.Krk.MemoryDraw.Game;
 
 namespace Dev.Krk.MemoryDraw.Inputs
 {
-    public class GameplayKeyboardInput : GameStateDependentInput
+    public class GameplayKeyboardInput : GameplayInput
     {
-        [Header("Dependencies")]
-        [SerializeField]
-        private GameController gameController;
-        
-
         protected override bool IsSupported()
         {
             return Application.platform != RuntimePlatform.Android && Application.platform != RuntimePlatform.IPhonePlayer;
@@ -20,25 +15,25 @@ namespace Dev.Krk.MemoryDraw.Inputs
         {
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                gameController.MoveUp();
+                OnMoveUpActionLaunched();
                 return;
             }
 
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                gameController.MoveDown();
+                OnMoveDownActionLaunched();
                 return;
             }
 
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                gameController.MoveLeft();
+                OnMoveLeftActionLaunched();
                 return;
             }
 
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                gameController.MoveRight();
+                OnMoveRightActionLaunched();
                 return;
             }
         }

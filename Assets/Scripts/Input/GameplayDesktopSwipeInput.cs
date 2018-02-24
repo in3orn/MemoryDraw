@@ -2,9 +2,8 @@
 
 namespace Dev.Krk.MemoryDraw.Inputs
 {
-    public class GameplayDesktopInput : GameplaySwipeInput
+    public class GameplayDesktopSwipeInput : GameplaySwipeInput
     {
-
         protected override bool IsSupported()
         {
             return Application.platform != RuntimePlatform.Android && Application.platform != RuntimePlatform.IPhonePlayer;

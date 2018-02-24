@@ -2,9 +2,8 @@
 
 namespace Dev.Krk.MemoryDraw.Inputs
 {
-    public class GameplayMobileInput : GameplaySwipeInput
+    public class GameplayMobileSwipeInput : GameplaySwipeInput
     {
-
         protected override void Init()
         {
             base.Init();

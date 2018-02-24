@@ -119,25 +119,5 @@ namespace Dev.Krk.MemoryDraw.Game
             DrawingData drawingData = groupData.Drawings[drawing];
             return drawingData.Maps[map];
         }
-
-        public void MoveLeft()
-        {
-            levelController.MoveLeft();
-        }
-
-        public void MoveRight()
-        {
-            levelController.MoveRight();
-        }
-
-        public void MoveUp()
-        {
-            levelController.MoveUp();
-        }
-
-        public void MoveDown()
-        {
-            levelController.MoveDown();
-        }
     }
 }

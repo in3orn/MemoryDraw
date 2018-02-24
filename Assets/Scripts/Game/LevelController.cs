@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Dev.Krk.MemoryDraw.Game.Level;
 using Dev.Krk.MemoryDraw.Game.Animations;
 using Dev.Krk.MemoryDraw.Data;
+using Dev.Krk.MemoryDraw.Inputs;
 
 //TODO refactor - to much responsibilities
 namespace Dev.Krk.MemoryDraw.Game
@@ -54,6 +55,9 @@ namespace Dev.Krk.MemoryDraw.Game
         [SerializeField]
         private LevelAnimator levelAnimator;
 
+        [SerializeField]
+        private GameplayInput gameplayInput;
+
 
         private Vector2 playerActualPosition;
 
@@ -96,6 +100,11 @@ namespace Dev.Krk.MemoryDraw.Game
 
         void OnEnable()
         {
+            gameplayInput.OnMoveUpActionLaunched += ProcessMoveUpActionLaunched;
+            gameplayInput.OnMoveDownActionLaunched += ProcessMoveDownActionLaunched;
+            gameplayInput.OnMoveLeftActionLaunched += ProcessMoveLeftActionLaunched;
+            gameplayInput.OnMoveRightActionLaunched += ProcessMoveRightActionLaunched;
+
             player.OnMoved += ProcessNextMove;
 
             fieldMap.OnShown += StartGame;
@@ -105,6 +114,14 @@ namespace Dev.Krk.MemoryDraw.Game
 
         void OnDisable()
         {
+            if(gameplayInput != null)
+            {
+                gameplayInput.OnMoveUpActionLaunched -= ProcessMoveUpActionLaunched;
+                gameplayInput.OnMoveDownActionLaunched -= ProcessMoveDownActionLaunched;
+                gameplayInput.OnMoveLeftActionLaunched -= ProcessMoveLeftActionLaunched;
+                gameplayInput.OnMoveRightActionLaunched -= ProcessMoveRightActionLaunched;
+            }
+
             if (player != null)
             {
                 player.OnMoved -= ProcessNextMove;
@@ -119,6 +136,26 @@ namespace Dev.Krk.MemoryDraw.Game
             {
                 finish.OnFinished -= FinishLevel;
             }
+        }
+
+        private void ProcessMoveUpActionLaunched()
+        {
+            MoveUp();
+        }
+
+        private void ProcessMoveDownActionLaunched()
+        {
+            MoveDown();
+        }
+
+        private void ProcessMoveLeftActionLaunched()
+        {
+            MoveLeft();
+        }
+
+        private void ProcessMoveRightActionLaunched()
+        {
+            MoveRight();
         }
 
 

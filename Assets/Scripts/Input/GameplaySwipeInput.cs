@@ -1,21 +1,15 @@
 ﻿using UnityEngine;
-using Dev.Krk.MemoryDraw.Game;
 
 namespace Dev.Krk.MemoryDraw.Inputs
 {
-    public abstract class GameplaySwipeInput : GameStateDependentInput
+    public abstract class GameplaySwipeInput : GameplayInput
     {
         [Header("Settings")]
         [SerializeField]
-        private float MinSwipeLength = 10.0f;
+        private float MinSwipeLength;
 
         [SerializeField]
-        private float MinSwipeDiff = 5.0f;
-
-
-        [Header("Dependencies")]
-        [SerializeField]
-        private GameController gameController;
+        private float MinDirectionDifference;
 
 
         private Vector2 start;
@@ -41,29 +35,29 @@ namespace Dev.Krk.MemoryDraw.Inputs
 
                 float ax = Mathf.Abs(swipe.x);
                 float ay = Mathf.Abs(swipe.y);
-                if (ax > MinSwipeLength && ax - ay > MinSwipeDiff)
+                if (ax > MinSwipeLength && ax - ay > MinDirectionDifference)
                 {
                     if (swipe.x > 0.0F)
                     {
-                        gameController.MoveRight();
+                        OnMoveRightActionLaunched();
                         return;
                     }
                     if (swipe.x < 0.0F)
                     {
-                        gameController.MoveLeft();
+                        OnMoveLeftActionLaunched();
                         return;
                     }
                 }
-                if (ay > MinSwipeLength && ay - ax > MinSwipeDiff)
+                if (ay > MinSwipeLength && ay - ax > MinDirectionDifference)
                 {
                     if (swipe.y > 0.0F)
                     {
-                        gameController.MoveUp();
+                        OnMoveUpActionLaunched();
                         return;
                     }
                     if (swipe.y < 0.0F)
                     {
-                        gameController.MoveDown();
+                        OnMoveDownActionLaunched();
                         return;
                     }
                 }
