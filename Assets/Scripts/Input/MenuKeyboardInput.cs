@@ -1,25 +1,11 @@
 ﻿using UnityEngine;
-using Dev.Krk.MemoryDraw.Game.State;
+
 
 namespace Dev.Krk.MemoryDraw.Inputs
 {
-    public class SummaryKeyboardInput : GameStateDependentInput
+    public class MenuKeyboardInput : MenuInput
     {
-        [Header("Dependencies")]
-        [SerializeField]
-        private ThemeController themeController;
-
-        void Awake()
-        {
-            Init();
-        }
-
-        protected void Init()
-        {
-            enabled = IsSupported();
-        }
-
-        protected bool IsSupported()
+        protected override bool IsSupported()
         {
             return Application.platform != RuntimePlatform.Android && Application.platform != RuntimePlatform.IPhonePlayer;
         }
@@ -28,13 +14,19 @@ namespace Dev.Krk.MemoryDraw.Inputs
         {
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                themeController.PrevTheme();
+                OnPrevActionLaunched();
                 return;
             }
 
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                themeController.NextTheme();
+                OnNextActionLaunched();
+                return;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                OnMainActionLaunched();
                 return;
             }
         }

@@ -7,13 +7,30 @@ namespace Dev.Krk.MemoryDraw.Inputs
     {
         [Header("Settings")]
         [SerializeField]
-        private GameStateController.StateEnum activeState;
+        private GameStateController.StateEnum[] allowedStates;
+
 
         [Header("Dependencies")]
         [SerializeField]
         private GameStateController gameStateController;
 
+
         private bool running;
+
+
+        void Start()
+        {
+            Init();
+        }
+
+        protected virtual void Init()
+        {
+            enabled = IsSupported();
+        }
+
+        protected abstract bool IsSupported();
+
+
 
         void OnEnable()
         {
@@ -30,13 +47,17 @@ namespace Dev.Krk.MemoryDraw.Inputs
 
         private void ProcessStateChanged(GameStateController.StateEnum state)
         {
-            running = state == activeState;
+            running = IsStateAllowed(state);
         }
 
-        void Start()
+        private bool IsStateAllowed(GameStateController.StateEnum state)
         {
+            foreach (var allowedState in allowedStates)
+                if (state == allowedState) return true;
 
+            return false;
         }
+
 
         void Update()
         {

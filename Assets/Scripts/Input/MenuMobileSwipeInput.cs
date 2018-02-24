@@ -2,7 +2,7 @@
 
 namespace Dev.Krk.MemoryDraw.Inputs
 {
-    public class SummaryMobileInput : SummarySwipeInput
+    public class MenuMobileSwipeInput : MenuSwipeInput
     {
         protected override void Init()
         {

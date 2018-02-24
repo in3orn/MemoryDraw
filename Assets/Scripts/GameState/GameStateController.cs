@@ -69,20 +69,20 @@ namespace Dev.Krk.MemoryDraw.State
         private ProgressController progressController;
 
         [SerializeField]
-        private GroupButtonsController groupButtonsController;
+        private ButtonsController groupButtonsController;
 
         [SerializeField]
-        private DrawingButtonsController drawingButtonsController;
+        private ButtonsController drawingButtonsController;
 
 
         private StateEnum state;
 
         private int currentGroup;
 
-
-        private StateEnum State
+        public StateEnum State
         {
-            set
+            get { return state; }
+            private set
             {
                 if (state != value)
                 {
@@ -99,9 +99,9 @@ namespace Dev.Krk.MemoryDraw.State
             game.OnFlowCompleted += ProcessFlowCompleted;
             game.OnLevelFailed += ProcessLevelFailed;
 
-            groupButtonsController.OnClicked += ProcessGroupButtonClicked;
+            groupButtonsController.OnButtonClicked += ProcessGroupButtonClicked;
 
-            drawingButtonsController.OnClicked += ProcessDrawingButtonClicked;
+            drawingButtonsController.OnButtonClicked += ProcessDrawingButtonClicked;
         }
 
         void OnDisable()
@@ -119,13 +119,13 @@ namespace Dev.Krk.MemoryDraw.State
 
             if (groupButtonsController != null)
             {
-                groupButtonsController.OnClicked -= ProcessGroupButtonClicked;
+                groupButtonsController.OnButtonClicked -= ProcessGroupButtonClicked;
             }
 
 
             if (drawingButtonsController != null)
             {
-                drawingButtonsController.OnClicked -= ProcessDrawingButtonClicked;
+                drawingButtonsController.OnButtonClicked -= ProcessDrawingButtonClicked;
             }
         }
 
@@ -162,6 +162,7 @@ namespace Dev.Krk.MemoryDraw.State
 
         private void ProcessResourcesInitialized()
         {
+            groupButtonsController.Init(0); //TODO last group from player prefs
             if (true)//scoreController.Level > 0)
             {
                 State = StateEnum.Groups;
@@ -177,7 +178,7 @@ namespace Dev.Krk.MemoryDraw.State
         private void ProcessGroupButtonClicked(int id)
         {
             currentGroup = id;
-            drawingButtonsController.Init(currentGroup);
+            drawingButtonsController.Init(0, currentGroup);
             State = StateEnum.Drawings;
         }
 

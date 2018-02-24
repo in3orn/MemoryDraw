@@ -12,7 +12,7 @@ namespace Dev.Krk.MemoryDraw.Common
 
         private RectTransform rectTransform;
 
-        private Vector3 targetScale;
+        private Vector3 targetScale = Vector3.negativeInfinity;
 
 
         public Vector3 TargetScale

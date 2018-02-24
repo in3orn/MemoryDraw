@@ -2,7 +2,7 @@
 
 namespace Dev.Krk.MemoryDraw.Inputs
 {
-    public class SummaryDesktopInput : SummarySwipeInput
+    public class MenuDesktopSwipeInput : MenuSwipeInput
     {
         protected override bool IsSupported()
         {

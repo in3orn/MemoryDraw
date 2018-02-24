@@ -9,5 +9,8 @@ namespace Dev.Krk.MemoryDraw.Data
         public string Image;
 
         public MapData[] Maps;
+
+        [NonSerialized]
+        public int Stars;
     }
 }

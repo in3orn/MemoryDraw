@@ -12,25 +12,16 @@ namespace Dev.Krk.MemoryDraw.Inputs
         [SerializeField]
         private float MinSwipeDiff = 5.0f;
 
+
         [Header("Dependencies")]
         [SerializeField]
         private GameController gameController;
 
+
         private Vector2 start;
 
         private bool down;
-
-        void Awake()
-        {
-            Init();
-        }
-
-        protected virtual void Init()
-        {
-            enabled = IsSupported();
-        }
-
-        protected abstract bool IsSupported();
+        
 
         protected override void UpdateInput()
         {
