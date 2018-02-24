@@ -8,7 +8,7 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
 {
     public class ButtonsController : MonoBehaviour
     {
-        public UnityAction<int> OnButtonClicked;
+        public UnityAction<ButtonController> OnButtonClicked;
 
 
         [Header("Settings")]
@@ -139,23 +139,23 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
         }
 
 
-        private void ProcessButtonClicked(int id)
+        private void ProcessButtonClicked(ButtonController button)
         {
             if (CanPerformAction())
             {
-                if (id < currentId)
+                if (button.Id < currentId)
                 {
                     currentId--;
                     UpdatePositions();
                 }
-                else if (id > currentId)
+                else if (button.Id > currentId)
                 {
                     currentId++;
                     UpdatePositions();
                 }
                 else
                 {
-                    OnButtonClicked(id);
+                    OnButtonClicked(button);
                 }
             }
         }
@@ -182,7 +182,7 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
         {
             if (CanPerformAction())
             {
-                OnButtonClicked(currentId);
+                OnButtonClicked(buttons[currentId]);
             }
         }
 

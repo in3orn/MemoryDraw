@@ -175,17 +175,25 @@ namespace Dev.Krk.MemoryDraw.State
             }
         }
 
-        private void ProcessGroupButtonClicked(int id)
+        private void ProcessGroupButtonClicked(ButtonController button)
         {
-            currentGroup = id;
-            drawingButtonsController.Init(0, currentGroup);
-            State = StateEnum.Drawings;
+            if (!button.Locked)
+            {
+                currentGroup = button.Id;
+                drawingButtonsController.Init(0, currentGroup);
+                State = StateEnum.Drawings;
+            }
+            else
+            {
+                //TODO open in-game store
+                Debug.Log("Store opened");
+            }
         }
 
-        private void ProcessDrawingButtonClicked(int id)
+        private void ProcessDrawingButtonClicked(ButtonController button)
         {
-            drawingController.SetDrawing(currentGroup, id);
-            progressController.StartDrawing(currentGroup, id);
+            drawingController.SetDrawing(currentGroup, button.Id);
+            progressController.StartDrawing(currentGroup, button.Id);
             PlayGame();
         }
 

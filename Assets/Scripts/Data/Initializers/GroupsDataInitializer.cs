@@ -1,6 +1,6 @@
 ﻿namespace Dev.Krk.MemoryDraw.Data.Initializers
 {
-    public class GroupsDataInitializer : JsonDataInitializer<GroupsData>
+    public class GroupsDataInitializer : JsonDataInitializer<GameData>
     {
     }
 }

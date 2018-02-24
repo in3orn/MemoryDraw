@@ -1,6 +1,7 @@
 ﻿using Dev.Krk.MemoryDraw.Data;
 using Dev.Krk.MemoryDraw.Data.Initializers;
 using Dev.Krk.MemoryDraw.Game.State;
+using Dev.Krk.MemoryDraw.Progress;
 using UnityEngine;
 
 namespace Dev.Krk.MemoryDraw.GUI.Buttons
@@ -10,6 +11,9 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
         [Header("Dependencies")]
         [SerializeField]
         private GroupsDataInitializer groupsDataInitializer;
+
+        [SerializeField]
+        private ProgressController progressController;
 
         [SerializeField]
         private ThemeController themeController;
@@ -25,9 +29,10 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
                 GameObject instance = CreateButton();
 
                 GroupData groupData = groupsDataInitializer.Data.Groups[i];
+                GroupProgressData progressData = progressController.GetGroupData(i);
 
                 GroupButtonController buttonController = instance.GetComponent<GroupButtonController>();
-                buttonController.Init(i, themeController.GetCurrentTheme(), groupData);
+                buttonController.Init(i, themeController.GetCurrentTheme(), groupData, progressData);
                 result[i] = buttonController;
             }
 

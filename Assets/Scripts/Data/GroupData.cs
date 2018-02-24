@@ -6,6 +6,7 @@ namespace Dev.Krk.MemoryDraw.Data
     public class GroupData
     {
         public string Name;
+        public bool Unlocked;
         public string[] Images;
         public DrawingData[] Drawings;
     }

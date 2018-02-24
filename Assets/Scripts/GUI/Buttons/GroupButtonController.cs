@@ -1,4 +1,5 @@
 ﻿using Dev.Krk.MemoryDraw.Data;
+using Dev.Krk.MemoryDraw.Progress;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,9 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
         private Image[] mainImages;
 
         [SerializeField]
+        private Image locker;
+
+        [SerializeField]
         private Image border;
 
         [SerializeField]
@@ -22,7 +26,7 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
         private Image[] starFills;
 
 
-        public void Init(int id, ThemeData themeData, GroupData groupData)
+        public void Init(int id, ThemeData themeData, GroupData groupData, GroupProgressData progressData)
         {
             Init(id);
 
@@ -33,6 +37,9 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
 
             background.color = themeData.GetColor(ThemeData.ColorEnum.BkgSecond);
             border.color = themeData.GetColor(ThemeData.ColorEnum.Main);
+            
+            locked = !progressData.Unlocked;
+            locker.enabled = locked;
 
             foreach (var starBorder in starBorders)
             {

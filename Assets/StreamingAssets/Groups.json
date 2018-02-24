@@ -1,6 +1,7 @@
 {
 	"Groups": [{
 		"Name": "Christmass",
+		"Unlocked": true,
 		"Images": [
 			"christmass-tree",
 			"heart",
@@ -164,6 +165,7 @@
 	},
 	{
 		"Name": "Standard",
+		"Unlocked": true,
 		"Images": [
 			"button",
 			"heart",
@@ -406,6 +408,7 @@
 	},
 	{
 		"Name": "Valentines",
+		"Unlocked": false,
 		"Images": [
 			"heart",
 			"heart",
@@ -648,6 +651,7 @@
 	},
 	{
 		"Name": "Something else 1",
+		"Unlocked": true,
 		"Images": [
 			"heart",
 			"button",
@@ -890,6 +894,7 @@
 	},
 	{
 		"Name": "Something else 2",
+		"Unlocked": false,
 		"Images": [
 			"heart",
 			"button",

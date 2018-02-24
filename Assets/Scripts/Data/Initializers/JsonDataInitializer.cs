@@ -9,9 +9,12 @@ namespace Dev.Krk.MemoryDraw.Data.Initializers
         [SerializeField]
         private string fileName = "*.json";
 
+
         private DataType data;
 
+
         public DataType Data { get { return data; } }
+
 
         public override void Init()
         {
