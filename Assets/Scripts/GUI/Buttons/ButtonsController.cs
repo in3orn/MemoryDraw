@@ -1,5 +1,7 @@
-﻿using Dev.Krk.MemoryDraw.Common;
+﻿using System;
+using Dev.Krk.MemoryDraw.Common;
 using Dev.Krk.MemoryDraw.Inputs;
+using Dev.Krk.MemoryDraw.Sounds;
 using Dev.Krk.MemoryDraw.State;
 using UnityEngine;
 using UnityEngine.Events;
@@ -28,6 +30,9 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
 
         [SerializeField]
         private GameStateController gameStateController;
+
+        [SerializeField]
+        private SoundController soundController;
 
 
         private ButtonController[] buttons;
@@ -138,7 +143,6 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
             rectTransform.localScale = Vector3.one / scale;
         }
 
-
         private void ProcessButtonClicked(ButtonController button)
         {
             if (CanPerformAction())
@@ -147,16 +151,23 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
                 {
                     currentId--;
                     UpdatePositions();
+                    soundController.PlayButtonPressed();
                 }
                 else if (button.Id > currentId)
                 {
                     currentId++;
                     UpdatePositions();
+                    soundController.PlayButtonPressed();
                 }
                 else
                 {
                     OnButtonClicked(button);
+                    soundController.PlayButtonPressed();
                 }
+            }
+            else
+            {
+                soundController.PlayLockedButtonPressed();
             }
         }
 
@@ -214,6 +225,13 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
 
             RectScaler rectScaler = buttonController.GetComponent<RectScaler>();
             rectScaler.TargetScale = Vector3.one / scale;
+        }
+
+
+        public void UpdateButton(int index)
+        {
+            var button = buttons[index];
+            buttonFactory.UpdateButton(button);
         }
     }
 }

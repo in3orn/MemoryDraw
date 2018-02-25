@@ -1,4 +1,5 @@
 ﻿using Dev.Krk.MemoryDraw.Data;
+using Dev.Krk.MemoryDraw.Progress;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,24 +23,27 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
         private Image[] starFills;
 
 
-        public void Init(int id, ThemeData themeData, DrawingData drawingData)
+        public void Init(int id, ThemeData themeData, DrawingData drawingData, DrawingProgressData progressData)
         {
             Init(id);
 
-            mainImage.sprite = Resources.Load<Sprite>("Drawings/" + drawingData.Image);
+            if (progressData.Completed)
+            {
+                mainImage.sprite = Resources.Load<Sprite>("Drawings/" + drawingData.Image);
+            }
 
             background.color = themeData.GetColor(ThemeData.ColorEnum.BkgSecond);
-            border.color = themeData.GetColor(ThemeData.ColorEnum.Main);
+            border.color = themeData.GetColor(ThemeData.ColorEnum.Second);
 
             foreach (var starBorder in starBorders)
             {
-                starBorder.color = themeData.GetColor(ThemeData.ColorEnum.Main);
+                starBorder.color = themeData.GetColor(ThemeData.ColorEnum.Second);
             }
 
             for (int i = 0; i < starFills.Length; i++)
             {
                 var starFill = starFills[i];
-                starFill.color = themeData.GetColor(i < drawingData.Stars ? ThemeData.ColorEnum.Main : ThemeData.ColorEnum.BkgSecond);
+                starFill.color = themeData.GetColor(i < progressData.Stars ? ThemeData.ColorEnum.Main : ThemeData.ColorEnum.BkgSecond);
             }
         }
     }

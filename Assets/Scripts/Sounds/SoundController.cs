@@ -75,6 +75,11 @@ namespace Dev.Krk.MemoryDraw.Sounds
             soundPlayer.PlaySound(SoundPlayer.SoundId.Button1 + buttonIndex);
         }
 
+        public void PlayLockedButtonPressed()
+        {
+            soundPlayer.PlaySound(SoundPlayer.SoundId.Failure);
+        }
+
         private void ProcessPlayerMoved(Vector2 vector)
         {
             slideIndex += Random.Range(0, numOfSlides - 1);

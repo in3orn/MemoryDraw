@@ -38,5 +38,14 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
 
             return result;
         }
+
+        public override void UpdateButton(ButtonController button)
+        {
+            GroupData groupData = groupsDataInitializer.Data.Groups[button.Id];
+            GroupProgressData groupProgressData = progressController.GetGroupData(button.Id);
+
+            GroupButtonController buttonController = button.GetComponent<GroupButtonController>();
+            buttonController.Init(button.Id, themeController.GetCurrentTheme(), groupData, groupProgressData);
+        }
     }
 }

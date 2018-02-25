@@ -1,6 +1,7 @@
 ﻿using Dev.Krk.MemoryDraw.Data;
 using Dev.Krk.MemoryDraw.Data.Initializers;
 using Dev.Krk.MemoryDraw.Game.State;
+using Dev.Krk.MemoryDraw.Progress;
 using UnityEngine;
 
 namespace Dev.Krk.MemoryDraw.GUI.Buttons
@@ -12,12 +13,16 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
         private GroupsDataInitializer groupsDataInitializer;
 
         [SerializeField]
+        private ProgressController progressController;
+
+        [SerializeField]
         private ThemeController themeController;
         
         
         public override ButtonController[] CreateButtons(int parentId)
         {
             GroupData groupData = groupsDataInitializer.Data.Groups[parentId];
+            GroupProgressData groupProgressData = progressController.GetGroupData(parentId);
 
             int size = groupData.Drawings.Length;
             ButtonController[] result = new ButtonController[size];
@@ -27,13 +32,26 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
                 GameObject instance = CreateButton();
 
                 DrawingData drawingData = groupData.Drawings[i];
+                DrawingProgressData drawingProgressData = groupProgressData.Drawings[i];
 
                 DrawingButtonController buttonController = instance.GetComponent<DrawingButtonController>();
-                buttonController.Init(i, themeController.GetCurrentTheme(), drawingData);
+                buttonController.Init(i, themeController.GetCurrentTheme(), drawingData, drawingProgressData);
                 result[i] = buttonController;
             }
 
             return result;
+        }
+
+        public override void UpdateButton(ButtonController button)
+        {
+            GroupData groupData = groupsDataInitializer.Data.Groups[progressController.Group];
+            DrawingData drawingData = groupData.Drawings[button.Id];
+
+            GroupProgressData groupProgressData = progressController.GetGroupData(progressController.Group);
+            DrawingProgressData drawingProgressData = groupProgressData.Drawings[button.Id];
+
+            DrawingButtonController buttonController = button.GetComponent<DrawingButtonController>();
+            buttonController.Init(button.Id, themeController.GetCurrentTheme(), drawingData, drawingProgressData);
         }
     }
 }

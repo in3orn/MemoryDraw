@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Dev.Krk.MemoryDraw.GUI.Buttons
 {
@@ -10,11 +11,12 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
 
 
         public abstract ButtonController[] CreateButtons(int parentId);
-        
 
         protected GameObject CreateButton()
         {
             return Instantiate(template);
         }
+
+        public abstract void UpdateButton(ButtonController button);
     }
 }

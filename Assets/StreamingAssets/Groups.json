@@ -360,7 +360,7 @@
 					"Y": 3
 				},
 				"Finish": {
-					"X": 0,
+					"X": 1,
 					"Y": 0
 				},
 				"Offset": {
@@ -368,7 +368,7 @@
 					"Y": -1.5
 				},
 				"HorizontalFields": [
-					{"Fields": [1, 0, 0]},
+					{"Fields": [0, 0, 0]},
 					{"Fields": [0, 1, 0]},
 					{"Fields": [0, 0, 0]},
 					{"Fields": [0, 0, 0]}
@@ -603,7 +603,7 @@
 					"Y": 3
 				},
 				"Finish": {
-					"X": 0,
+					"X": 1,
 					"Y": 0
 				},
 				"Offset": {
@@ -611,7 +611,7 @@
 					"Y": -1.5
 				},
 				"HorizontalFields": [
-					{"Fields": [1, 0, 0]},
+					{"Fields": [0, 0, 0]},
 					{"Fields": [0, 1, 0]},
 					{"Fields": [0, 0, 0]},
 					{"Fields": [0, 0, 0]}
@@ -846,7 +846,7 @@
 					"Y": 3
 				},
 				"Finish": {
-					"X": 0,
+					"X": 1,
 					"Y": 0
 				},
 				"Offset": {
@@ -854,7 +854,7 @@
 					"Y": -1.5
 				},
 				"HorizontalFields": [
-					{"Fields": [1, 0, 0]},
+					{"Fields": [0, 0, 0]},
 					{"Fields": [0, 1, 0]},
 					{"Fields": [0, 0, 0]},
 					{"Fields": [0, 0, 0]}
@@ -1089,7 +1089,7 @@
 					"Y": 3
 				},
 				"Finish": {
-					"X": 0,
+					"X": 1,
 					"Y": 0
 				},
 				"Offset": {
@@ -1097,7 +1097,7 @@
 					"Y": -1.5
 				},
 				"HorizontalFields": [
-					{"Fields": [1, 0, 0]},
+					{"Fields": [0, 0, 0]},
 					{"Fields": [0, 1, 0]},
 					{"Fields": [0, 0, 0]},
 					{"Fields": [0, 0, 0]}
