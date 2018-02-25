@@ -84,3 +84,4 @@ $RECYCLE.BIN/
 # VisualStudio
 .vs/*
 Assets/StreamingAssets/progress.mdp
+Assets/StreamingAssets/progress.meta
