@@ -1,5 +1,4 @@
-﻿using System;
-using Dev.Krk.MemoryDraw.Sounds;
+﻿using Dev.Krk.MemoryDraw.Sounds;
 using UnityEngine;
 
 namespace Dev.Krk.MemoryDraw.GUI

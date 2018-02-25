@@ -110,7 +110,7 @@ namespace Dev.Krk.MemoryDraw.Game
         private void StartLevel()
         {
             levelController.Clear();
-            levelController.Init(GetMapData(progressController.Group, progressController.Drawing, progressController.Map));
+            levelController.Init(GetMapData(progressController.GroupIndex, progressController.DrawingIndex, progressController.MapIndex));
         }
 
         private MapData GetMapData(int group, int drawing, int map)

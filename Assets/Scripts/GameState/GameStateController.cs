@@ -152,8 +152,8 @@ namespace Dev.Krk.MemoryDraw.State
 
         private void ProcessFlowCompleted()
         {
-            drawingButtonsController.UpdateButton(progressController.Drawing);
-            groupButtonsController.UpdateButton(progressController.Group);
+            drawingButtonsController.UpdateButton(progressController.DrawingIndex);
+            groupButtonsController.UpdateButton(progressController.GroupIndex);
 
             StartCoroutine(ChangeState(StateEnum.Drawings, null, flowCompletedDelay));
         }

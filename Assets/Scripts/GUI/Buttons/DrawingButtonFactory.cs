@@ -44,10 +44,10 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
 
         public override void UpdateButton(ButtonController button)
         {
-            GroupData groupData = groupsDataInitializer.Data.Groups[progressController.Group];
+            GroupData groupData = groupsDataInitializer.Data.Groups[progressController.GroupIndex];
             DrawingData drawingData = groupData.Drawings[button.Id];
 
-            GroupProgressData groupProgressData = progressController.GetGroupData(progressController.Group);
+            GroupProgressData groupProgressData = progressController.GetGroupData(progressController.GroupIndex);
             DrawingProgressData drawingProgressData = groupProgressData.Drawings[button.Id];
 
             DrawingButtonController buttonController = button.GetComponent<DrawingButtonController>();

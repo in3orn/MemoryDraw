@@ -25,6 +25,15 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
         [SerializeField]
         private Image[] starFills;
 
+        [SerializeField]
+        private Image progressBarBkg;
+
+        [SerializeField]
+        private Image progressBarFill;
+
+        [SerializeField]
+        private Image progressBarBorder;
+
 
         public void Init(int id, ThemeData themeData, GroupData groupData, GroupProgressData progressData)
         {
@@ -41,6 +50,12 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
             locked = !progressData.Unlocked;
             locker.enabled = locked;
 
+            progressBarBkg.color = themeData.GetColor(ThemeData.ColorEnum.BkgSecond);
+            progressBarFill.color = themeData.GetColor(ThemeData.ColorEnum.Main);
+            progressBarBorder.color = themeData.GetColor(ThemeData.ColorEnum.Second);
+
+            progressBarFill.fillAmount = CalculateGroupFill(progressData);
+
             foreach (var starBorder in starBorders)
             {
                 starBorder.color = themeData.GetColor(ThemeData.ColorEnum.Second);
@@ -55,14 +70,26 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
 
         private float CalculateGroupStars(GroupProgressData groupData)
         {
-            int stars = 0;
+            float stars = 0;
 
             foreach (var drawingData in groupData.Drawings)
             {
                 stars += drawingData.Stars;
             }
 
-            return stars / (float)groupData.Drawings.Count;
+            return stars / groupData.Drawings.Count;
+        }
+
+        private float CalculateGroupFill(GroupProgressData groupData)
+        {
+            float fill = 0;
+
+            foreach (var drawingData in groupData.Drawings)
+            {
+                if (drawingData.Completed) fill++;
+            }
+
+            return fill / groupData.Drawings.Count;
         }
     }
 

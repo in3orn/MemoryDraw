@@ -8,11 +8,12 @@ namespace Dev.Krk.MemoryDraw.Game.State
 {
     public class ProgressController : MonoBehaviour
     {
-        private readonly string GROUP = "Group";
+        private readonly string GROUP_NAME = "Group";
 
-        private readonly string DRAWING = "Drawing";
+        private readonly string DRAWING_NAME = "Drawing";
 
-        private readonly string MAP = "Map";
+        private readonly string MAP_INDEX = "Map";
+
 
         [SerializeField]
         private GroupsDataInitializer groupsDataInitializer;
@@ -24,21 +25,21 @@ namespace Dev.Krk.MemoryDraw.Game.State
         private LivesController livesController;
 
 
-        private int group;
+        private int groupIndex;
 
-        private int drawing;
+        private int drawingIndex;
 
-        private int map;
+        private int mapIndex;
 
 
         private GameProgressData gameProgressData;
 
 
-        public int Group { get { return group; } }
+        public int GroupIndex { get { return groupIndex; } }
 
-        public int Drawing { get { return drawing; } }
+        public int DrawingIndex { get { return drawingIndex; } }
 
-        public int Map { get { return map; } }
+        public int MapIndex { get { return mapIndex; } }
 
 
         public GroupProgressData GetGroupData(int i)
@@ -80,24 +81,50 @@ namespace Dev.Krk.MemoryDraw.Game.State
 
         private void SaveData()
         {
-            PlayerPrefs.SetInt(GROUP, group); //TODO switch to names as ordering can be modified within updates!!
-            PlayerPrefs.SetInt(DRAWING, drawing);
-            PlayerPrefs.SetInt(MAP, map);
+            GroupProgressData groupData = gameProgressData.Groups[groupIndex];
+            PlayerPrefs.SetString(GROUP_NAME, groupData.Name);
+
+            DrawingProgressData drawingData = groupData.Drawings[drawingIndex];
+            PlayerPrefs.SetString(DRAWING_NAME, drawingData.Name);
+            
+            PlayerPrefs.SetInt(MAP_INDEX, mapIndex);
 
             gameProgressDataInitializer.Save(gameProgressData);
         }
 
         private void LoadData()
         {
-            group = PlayerPrefs.GetInt(GROUP);
-            drawing = PlayerPrefs.GetInt(DRAWING);
-            map = PlayerPrefs.GetInt(MAP);
-
             gameProgressData = gameProgressDataInitializer.Load();
-
             Adjust(gameProgressData, groupsDataInitializer.Data);
+
+            groupIndex = GetGroupIndex(PlayerPrefs.GetString(GROUP_NAME));
+            drawingIndex = GetDrawingIndex(PlayerPrefs.GetString(DRAWING_NAME), groupIndex);
+
+            mapIndex = PlayerPrefs.GetInt(MAP_INDEX);
         }
-        
+
+        private int GetGroupIndex(string name)
+        {
+            for(int i = 0; i < gameProgressData.Groups.Count; i++)
+            {
+                GroupProgressData groupData = gameProgressData.Groups[i];
+                if (groupData.Name == name) return i;
+            }
+            return 0;
+        }
+
+        private int GetDrawingIndex(string name, int groupIndex)
+        {
+            GroupProgressData groupData = gameProgressData.Groups[groupIndex];
+
+            for (int i = 0; i < groupData.Drawings.Count; i++)
+            {
+                DrawingProgressData drawingData = groupData.Drawings[i];
+                if (drawingData.Name == name) return i;
+            }
+            return 0;
+        }
+
         private void Adjust(GameProgressData gameProgressData, GameData gameConfigData)
         {
             List<GroupProgressData> orderedData = new List<GroupProgressData>(gameConfigData.Groups.Length);
@@ -170,25 +197,25 @@ namespace Dev.Krk.MemoryDraw.Game.State
 
         public void StartDrawing(int group, int drawing)
         {
-            this.group = group;
-            this.drawing = drawing;
-            map = 0;
+            this.groupIndex = group;
+            this.drawingIndex = drawing;
+            mapIndex = 0;
         }
 
         public void NextMap()
         {
-            map++;
+            mapIndex++;
         }
 
         public bool IsDrawingCompleted()
         {
-            return map == groupsDataInitializer.Data.Groups[group].Drawings[drawing].Maps.Length;
+            return mapIndex == groupsDataInitializer.Data.Groups[groupIndex].Drawings[drawingIndex].Maps.Length;
         }
 
         public void FinishDrawing()
         {
-            GroupProgressData groupProgressData = gameProgressData.Groups[group];
-            DrawingProgressData drawingProgressData = groupProgressData.Drawings[drawing];
+            GroupProgressData groupProgressData = gameProgressData.Groups[groupIndex];
+            DrawingProgressData drawingProgressData = groupProgressData.Drawings[drawingIndex];
 
             drawingProgressData.Completed = true;
             drawingProgressData.Stars = livesController.Lives;

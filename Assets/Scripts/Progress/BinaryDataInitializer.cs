@@ -47,7 +47,7 @@ namespace Dev.Krk.MemoryDraw.Progress
         {
             if (Application.platform == RuntimePlatform.Android)
             {
-                return "jar:file://" + Application.dataPath + "!/assets/" + fileName; //TODO check this
+                return Application.persistentDataPath + @"\Resources\Save\" + fileName;
             }
             else
             {
