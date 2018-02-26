@@ -15,7 +15,7 @@ namespace Dev.Krk.MemoryDraw.Game.GUI
         private LivesController livesController;
 
         [SerializeField]
-        private ScoreController scoreController;
+        private ProgressController progressController;
 
 
         private Animator animator;
@@ -49,12 +49,12 @@ namespace Dev.Krk.MemoryDraw.Game.GUI
 
         private void UpdateLife()
         {
-            if (!shown && scoreController.Level > 0 && livesController.Lives > lifeIndex)
+            if (!shown && livesController.Lives > lifeIndex && (progressController.GroupIndex > 0 || progressController.DrawingIndex > 0))
             {
                 animator.SetTrigger("Show");
                 shown = true;
             }
-            else if (shown && livesController.Lives <= lifeIndex)
+            else if (shown && (livesController.Lives <= lifeIndex || (progressController.GroupIndex <= 0 && progressController.DrawingIndex <= 0)))
             {
                 animator.SetTrigger("Hide");
                 shown = false;

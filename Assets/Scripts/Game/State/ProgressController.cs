@@ -230,7 +230,8 @@ namespace Dev.Krk.MemoryDraw.Game.State
             DrawingProgressData drawingProgressData = groupProgressData.Drawings[drawingIndex];
 
             drawingProgressData.Completed = true;
-            drawingProgressData.Stars = livesController.Lives;
+            if(drawingProgressData.Stars < livesController.Lives)
+                drawingProgressData.Stars = livesController.Lives;
 
             gamesPlayed++;
 

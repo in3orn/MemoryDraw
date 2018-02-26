@@ -40,6 +40,8 @@ namespace Dev.Krk.MemoryDraw.Game.State
 
                 yield return new WaitForSeconds(resetInterval);
             }
+
+            if (OnLivesUpdated != null) OnLivesUpdated();
         }
     }
 }
