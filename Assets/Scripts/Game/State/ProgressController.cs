@@ -14,6 +14,8 @@ namespace Dev.Krk.MemoryDraw.Game.State
 
         private readonly string MAP_INDEX = "Map";
 
+        private readonly string GAMES_PLAYED = "GamesPlayed";
+
 
         [SerializeField]
         private GroupsDataInitializer groupsDataInitializer;
@@ -42,6 +44,12 @@ namespace Dev.Krk.MemoryDraw.Game.State
         public int MapIndex { get { return mapIndex; } }
 
 
+        private int gamesPlayed;
+
+
+        public int GamesPlayed { get { return gamesPlayed; } }
+
+
         public GroupProgressData GetGroupData(int i)
         {
             return gameProgressData.Groups[i];
@@ -55,7 +63,7 @@ namespace Dev.Krk.MemoryDraw.Game.State
 
         void OnDisable()
         {
-            if(groupsDataInitializer != null)
+            if (groupsDataInitializer != null)
             {
                 groupsDataInitializer.OnInitialized -= ProcessConfigInitialized;
             }
@@ -81,12 +89,14 @@ namespace Dev.Krk.MemoryDraw.Game.State
 
         private void SaveData()
         {
+            PlayerPrefs.SetInt(GAMES_PLAYED, gamesPlayed);
+
             GroupProgressData groupData = gameProgressData.Groups[groupIndex];
             PlayerPrefs.SetString(GROUP_NAME, groupData.Name);
 
             DrawingProgressData drawingData = groupData.Drawings[drawingIndex];
             PlayerPrefs.SetString(DRAWING_NAME, drawingData.Name);
-            
+
             PlayerPrefs.SetInt(MAP_INDEX, mapIndex);
 
             gameProgressDataInitializer.Save(gameProgressData);
@@ -94,6 +104,8 @@ namespace Dev.Krk.MemoryDraw.Game.State
 
         private void LoadData()
         {
+            gamesPlayed = PlayerPrefs.GetInt(GAMES_PLAYED);
+
             gameProgressData = gameProgressDataInitializer.Load();
             Adjust(gameProgressData, groupsDataInitializer.Data);
 
@@ -105,7 +117,7 @@ namespace Dev.Krk.MemoryDraw.Game.State
 
         private int GetGroupIndex(string name)
         {
-            for(int i = 0; i < gameProgressData.Groups.Count; i++)
+            for (int i = 0; i < gameProgressData.Groups.Count; i++)
             {
                 GroupProgressData groupData = gameProgressData.Groups[i];
                 if (groupData.Name == name) return i;
@@ -138,7 +150,7 @@ namespace Dev.Krk.MemoryDraw.Game.State
             gameProgressData.Groups.Clear();
             gameProgressData.Groups.AddRange(orderedData);
         }
-        
+
         private void Adjust(GroupProgressData groupProgressData, GroupData groupConfigData)
         {
             if (!groupProgressData.Unlocked)
@@ -219,6 +231,8 @@ namespace Dev.Krk.MemoryDraw.Game.State
 
             drawingProgressData.Completed = true;
             drawingProgressData.Stars = livesController.Lives;
+
+            gamesPlayed++;
 
             SaveData();
         }

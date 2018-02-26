@@ -64,7 +64,7 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
             for (int i = 0; i < starFills.Length; i++)
             {
                 var starFill = starFills[i];
-                starFill.color = themeData.GetColor(i < CalculateGroupStars(progressData) ? ThemeData.ColorEnum.Main : ThemeData.ColorEnum.BkgSecond);
+                starFill.color = themeData.GetColor(i+1 <= CalculateGroupStars(progressData) ? ThemeData.ColorEnum.Main : ThemeData.ColorEnum.BkgSecond);
             }
         }
 

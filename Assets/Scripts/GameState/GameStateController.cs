@@ -165,10 +165,12 @@ namespace Dev.Krk.MemoryDraw.State
 
         private void ProcessResourcesInitialized()
         {
-            groupButtonsController.Init(0); //TODO last group from player prefs
-            if (true)//scoreController.Level > 0)
+            groupButtonsController.Init(progressController.GroupIndex);
+            drawingButtonsController.Init(progressController.DrawingIndex);
+
+            if (progressController.GamesPlayed > 0)
             {
-                State = StateEnum.Groups;
+                State = StateEnum.Drawings;
             }
             else
             {

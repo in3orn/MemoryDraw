@@ -159,15 +159,15 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
                     UpdatePositions();
                     soundController.PlayButtonPressed();
                 }
-                else
+                else if (!button.Locked)
                 {
                     OnButtonClicked(button);
                     soundController.PlayButtonPressed();
                 }
-            }
-            else
-            {
-                soundController.PlayLockedButtonPressed();
+                else
+                {
+                    soundController.PlayLockedButtonPressed();
+                }
             }
         }
 
@@ -193,7 +193,7 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
         {
             if (CanPerformAction())
             {
-                OnButtonClicked(buttons[currentId]);
+                ProcessButtonClicked(buttons[currentId]);
             }
         }
 

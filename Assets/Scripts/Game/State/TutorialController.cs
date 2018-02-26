@@ -27,7 +27,7 @@ namespace Dev.Krk.MemoryDraw.Game.State
         private LevelController levelController;
 
         [SerializeField]
-        private ScoreController scoreController;
+        private ProgressController progressController;
 
 
         private float startTime;
@@ -74,7 +74,7 @@ namespace Dev.Krk.MemoryDraw.Game.State
 
         private void ProcessLevelStarted()
         {
-            if (scoreController.Level <= 0)
+            if (ShouldShowTutorial())
             {
                 if (State == StateEnum.Hidden || State == StateEnum.NextLevel)
                 {
@@ -85,7 +85,7 @@ namespace Dev.Krk.MemoryDraw.Game.State
 
         private void ProcessPlayerMoved(Vector2 direction)
         {
-            if (scoreController.Level <= 0)
+            if (ShouldShowTutorial())
             {
                 if (State == StateEnum.SwipeRight && direction == Vector2.right)
                 {
@@ -101,6 +101,11 @@ namespace Dev.Krk.MemoryDraw.Game.State
                     enabled = false;
                 }
             }
+        }
+
+        private bool ShouldShowTutorial()
+        {
+            return progressController.GroupIndex <= 0 && progressController.DrawingIndex <= 0;
         }
     }
 }
