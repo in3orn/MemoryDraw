@@ -8,8 +8,8 @@ namespace Dev.Krk.MemoryDraw.Data
         public RowData[] HorizontalFields;
         public RowData[] VerticalFields;
 
-        public PointData Start;
-        public PointData Finish;
+        public PointData[] Starts;
+        public PointData[] Finishes;
 
         public PointData Offset;
     }

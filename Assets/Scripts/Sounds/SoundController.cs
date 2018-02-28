@@ -44,6 +44,7 @@ namespace Dev.Krk.MemoryDraw.Sounds
             levelController.OnPlayerMoved += ProcessPlayerMoved;
             levelController.OnPlayerFailed += ProcessPlayerFailed;
 
+            levelController.OnPartCompleted += ProcessLevelCompleted;
             levelController.OnLevelCompleted += ProcessLevelCompleted;
             levelController.OnLevelFailed += ProcessLevelFailed;
 
@@ -57,6 +58,7 @@ namespace Dev.Krk.MemoryDraw.Sounds
                 levelController.OnPlayerMoved -= ProcessPlayerMoved;
                 levelController.OnPlayerFailed -= ProcessPlayerFailed;
 
+                levelController.OnPartCompleted -= ProcessLevelCompleted;
                 levelController.OnLevelCompleted -= ProcessLevelCompleted;
                 levelController.OnLevelFailed -= ProcessLevelFailed;
             }

@@ -62,6 +62,8 @@ namespace Dev.Krk.MemoryDraw.Game
 
         public bool Hidden { get { return State == StateEnum.Hidden; } }
 
+        public bool Visited { get { return State == StateEnum.Visited; } }
+
         [SerializeField]
         private Transform rotator;
         

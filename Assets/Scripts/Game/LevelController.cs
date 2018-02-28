@@ -5,6 +5,7 @@ using Dev.Krk.MemoryDraw.Game.Level;
 using Dev.Krk.MemoryDraw.Game.Animations;
 using Dev.Krk.MemoryDraw.Data;
 using Dev.Krk.MemoryDraw.Inputs;
+using System.Collections;
 
 //TODO refactor - to much responsibilities
 namespace Dev.Krk.MemoryDraw.Game
@@ -16,6 +17,8 @@ namespace Dev.Krk.MemoryDraw.Game
 
         public UnityAction OnLevelStarted;
         public UnityAction OnLevelEnded;
+
+        public UnityAction OnPartCompleted;
 
         public UnityAction OnLevelCompleted;
         public UnityAction OnLevelFailed;
@@ -64,7 +67,7 @@ namespace Dev.Krk.MemoryDraw.Game
         private Queue<Vector2> queuedMoves;
 
         private Queue<Field> queuedFields;
-        
+
 
         private List<Field> oldHorizontalFields;
 
@@ -72,6 +75,11 @@ namespace Dev.Krk.MemoryDraw.Game
 
 
         private Vector2 offset;
+
+
+        private MapData mapData;
+
+        private int part;
 
 
         public int HorizontalLength
@@ -109,12 +117,12 @@ namespace Dev.Krk.MemoryDraw.Game
 
             fieldMap.OnShown += StartGame;
 
-            finish.OnFinished += FinishLevel;
+            finish.OnFinished += FinishPart;
         }
 
         void OnDisable()
         {
-            if(gameplayInput != null)
+            if (gameplayInput != null)
             {
                 gameplayInput.OnMoveUpActionLaunched -= ProcessMoveUpActionLaunched;
                 gameplayInput.OnMoveDownActionLaunched -= ProcessMoveDownActionLaunched;
@@ -134,7 +142,7 @@ namespace Dev.Krk.MemoryDraw.Game
 
             if (finish != null)
             {
-                finish.OnFinished -= FinishLevel;
+                finish.OnFinished -= FinishPart;
             }
         }
 
@@ -161,15 +169,14 @@ namespace Dev.Krk.MemoryDraw.Game
 
         public void Init(MapData mapData)
         {
+            this.mapData = mapData;
+            part = 0;
+
             offset = new Vector2(mapData.Offset.X, mapData.Offset.Y);
             fieldMap.Init(levelProvider.GetMapData(mapData), offset);
 
-            Vector2 playerPosition = (offset + new Vector2(mapData.Start.X, mapData.Start.Y)) * Field.SIZE;
-            player.Init(playerPosition, fieldMap.ShowInterval, fieldMap.HideInterval);
-            playerActualPosition = player.transform.position;
-
-            Vector2 finishPosition = (offset + new Vector2(mapData.Finish.X, mapData.Finish.Y)) * Field.SIZE;
-            finish.Init(finishPosition, fieldMap.ShowInterval, fieldMap.HideInterval);
+            InitPlayerPosition(part);
+            InitFinishPosition(part);
 
             queuedFields.Clear();
             queuedMoves.Clear();
@@ -183,8 +190,22 @@ namespace Dev.Krk.MemoryDraw.Game
             if (OnLevelStarted != null) OnLevelStarted();
         }
 
+        private void InitPlayerPosition(int part)
+        {
+            Vector2 playerPosition = (offset + new Vector2(mapData.Starts[part].X, mapData.Starts[part].Y)) * Field.SIZE;
+            player.Init(playerPosition, fieldMap.ShowInterval, fieldMap.HideInterval);
+            playerActualPosition = player.transform.position;
+        }
+
+        private void InitFinishPosition(int part)
+        {
+            Vector2 finishPosition = (offset + new Vector2(mapData.Finishes[part].X, mapData.Finishes[part].Y)) * Field.SIZE;
+            finish.Init(finishPosition, fieldMap.ShowInterval, fieldMap.HideInterval);
+        }
+
         public void Reset()
         {
+            part = 0;
             ResetOldFields();
         }
 
@@ -232,7 +253,9 @@ namespace Dev.Krk.MemoryDraw.Game
 
         private void InitCenter()
         {
-            center.transform.position = (player.transform.position + finish.transform.position) * 0.5f;
+            float w2 = fieldMap.HorizontalLength * 0.5f;
+            float h2 = fieldMap.VerticalLength * 0.5f;
+            center.transform.position = (offset + new Vector2(w2, h2)) * Field.SIZE;
         }
 
         public bool CanMoveLeft()
@@ -404,6 +427,43 @@ namespace Dev.Krk.MemoryDraw.Game
             }
         }
 
+        private void FinishPart()
+        {
+            Vector2 index = finish.transform.position / Field.SIZE;
+            index -= offset;
+            if (fieldMap.IsPathVisited((int)index.x, (int)index.y))
+            {
+                part++;
+                if (part < mapData.Finishes.Length)
+                {
+                    StartCoroutine(InitNextPart());
+                    if (OnPartCompleted != null) OnPartCompleted();
+                }
+                else
+                {
+                    FinishLevel();
+                }
+            }
+        }
+
+        private IEnumerator InitNextPart()
+        {
+            state = StateEnum.Finished;
+
+            finish.Hide();
+            player.Hide();
+
+            yield return new WaitForSeconds(1f);
+
+            InitPlayerPosition(part);
+            InitFinishPosition(part);
+
+            finish.Show();
+            player.Show();
+
+            state = StateEnum.Playing;
+        }
+
         public void FinishLevel()
         {
             state = StateEnum.Finished;
@@ -423,7 +483,7 @@ namespace Dev.Krk.MemoryDraw.Game
 
             MoveToOld(fieldMap.HorizontalFields, oldHorizontalFields);
             MoveToOld(fieldMap.VerticalFields, oldVerticalFields);
-            
+
             int size = fieldMap.HorizontalLength + fieldMap.VerticalLength + (int)offset.x + (int)offset.y + 1; //TODO calculate max
             levelAnimator.FailLevel(oldHorizontalFields, oldVerticalFields, size);
 

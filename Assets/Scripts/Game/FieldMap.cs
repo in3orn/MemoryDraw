@@ -281,4 +281,91 @@ public class FieldMap : MonoBehaviour
             if (!field.Valid || field.Masked) field.Hide();
         }
     }
+
+
+
+    private enum DirectionEnum
+    {
+        None = 0,
+        Up,
+        Down,
+        Left,
+        Right
+    }
+
+    private bool[,] pointsVisited;
+
+    public bool IsPathVisited(int x, int y)
+    {
+        pointsVisited = new bool[horizontalFields.GetLength(1)+1, verticalFields.GetLength(0)+1];
+        return IsVertexVisited(x, y, DirectionEnum.None);
+    }
+
+    private bool IsVertexVisited(int x, int y, DirectionEnum direction)
+    {
+        if (pointsVisited[x, y]) return true;
+        pointsVisited[x, y] = true;
+
+        if (direction != DirectionEnum.Up)
+        {
+            if (x >= 0 && y >= 1 && y < verticalFields.GetLength(0) && x < verticalFields.GetLength(1) && verticalFields[y - 1, x].Valid)
+            {
+                if (!verticalFields[y - 1, x].Visited)
+                {
+                    return false;
+                }
+                else if (!IsVertexVisited(x, y - 1, DirectionEnum.Down))
+                {
+                    return false;
+                }
+            }
+        }
+
+        if (direction != DirectionEnum.Down)
+        {
+            if (x >= 0 && y >= 0 && y < verticalFields.GetLength(0) && x < verticalFields.GetLength(1) && verticalFields[y, x].Valid)
+            {
+                if (!verticalFields[y, x].Visited)
+                {
+                    return false;
+                }
+                else if (!IsVertexVisited(x, y + 1, DirectionEnum.Up))
+                {
+                    return false;
+                }
+            }
+        }
+
+        if (direction != DirectionEnum.Right)
+        {
+            if (x >= 1 && y >= 0 && y < horizontalFields.GetLength(0) && x < horizontalFields.GetLength(1) && horizontalFields[y, x - 1].Valid)
+            {
+                if (!horizontalFields[y, x - 1].Visited)
+                {
+                    return false;
+                }
+                else if (!IsVertexVisited(x - 1, y, DirectionEnum.Left))
+                {
+                    return false;
+                }
+            }
+        }
+
+        if (direction != DirectionEnum.Left)
+        {
+            if (x >= 0 && y >= 0 && y < horizontalFields.GetLength(0) && x < horizontalFields.GetLength(1) && horizontalFields[y, x].Valid)
+            {
+                if (!horizontalFields[y, x].Visited)
+                {
+                    return false;
+                }
+                else if (!IsVertexVisited(x + 1, y, DirectionEnum.Right))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }
