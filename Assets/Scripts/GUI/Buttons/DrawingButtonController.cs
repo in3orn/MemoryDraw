@@ -29,13 +29,14 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
             if (progressData.Completed)
             {
                 mainImage.sprite = Resources.Load<Sprite>("Drawings/" + drawingData.Image);
-                questionMark.enabled = false;
             }
             else
             {
                 questionMark.color = themeData.GetColor(ThemeData.ColorEnum.Second);
-                mainImage.enabled = false;
             }
+
+            questionMark.enabled = !progressData.Completed;
+            mainImage.enabled = progressData.Completed;
 
             for (int i = 0; i < stars.Length; i++)
             {
