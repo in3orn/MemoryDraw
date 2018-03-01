@@ -134,13 +134,13 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
         private void InitPosition(ButtonController buttonController)
         {
             int diff = buttonController.Id - currentId;
-            float scale = Mathf.Pow(2, Mathf.Abs(diff));
 
             RectTransform rectTransform = buttonController.GetComponent<RectTransform>();
             rectTransform.SetParent(GetComponent<RectTransform>());
-            rectTransform.anchoredPosition = Vector2.right * spacing * diff * scale;
+            rectTransform.anchoredPosition = Vector2.right * spacing * diff;
 
-            rectTransform.localScale = Vector3.one / scale;
+            RectScaler rectScaler = buttonController.GetComponent<RectScaler>();
+            rectScaler.TargetScale = Vector3.one;
         }
 
         private void ProcessButtonClicked(ButtonController button)
@@ -218,13 +218,9 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
         private void UpdatePosition(ButtonController buttonController)
         {
             int diff = buttonController.Id - currentId;
-            float scale = Mathf.Pow(2, Mathf.Abs(diff));
 
             RectMover rectMover = buttonController.GetComponent<RectMover>();
-            rectMover.Target = Vector2.right * spacing * diff * scale;
-
-            RectScaler rectScaler = buttonController.GetComponent<RectScaler>();
-            rectScaler.TargetScale = Vector3.one / scale;
+            rectMover.Target = Vector2.right * spacing * diff;
         }
 
 

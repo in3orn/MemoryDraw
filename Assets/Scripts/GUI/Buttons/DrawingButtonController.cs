@@ -14,36 +14,33 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
         private Image mainImage;
 
         [SerializeField]
-        private Image border;
+        private Image questionMark;
 
         [SerializeField]
-        private Image[] starBorders;
-
-        [SerializeField]
-        private Image[] starFills;
+        private Image[] stars;
 
 
         public void Init(int id, ThemeData themeData, DrawingData drawingData, DrawingProgressData progressData)
         {
             Init(id);
 
+            background.color = themeData.GetColor(ThemeData.ColorEnum.BkgSecond);
+
             if (progressData.Completed)
             {
                 mainImage.sprite = Resources.Load<Sprite>("Drawings/" + drawingData.Image);
+                questionMark.enabled = false;
+            }
+            else
+            {
+                questionMark.color = themeData.GetColor(ThemeData.ColorEnum.Second);
+                mainImage.enabled = false;
             }
 
-            background.color = themeData.GetColor(ThemeData.ColorEnum.BkgSecond);
-            border.color = themeData.GetColor(ThemeData.ColorEnum.Second);
-
-            foreach (var starBorder in starBorders)
+            for (int i = 0; i < stars.Length; i++)
             {
-                starBorder.color = themeData.GetColor(ThemeData.ColorEnum.Second);
-            }
-
-            for (int i = 0; i < starFills.Length; i++)
-            {
-                var starFill = starFills[i];
-                starFill.color = themeData.GetColor(i < progressData.Stars ? ThemeData.ColorEnum.Main : ThemeData.ColorEnum.BkgSecond);
+                var star = stars[i];
+                star.color = themeData.GetColor(i < progressData.Stars ? ThemeData.ColorEnum.Main : ThemeData.ColorEnum.Second);
             }
         }
     }

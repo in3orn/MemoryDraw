@@ -17,22 +17,7 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
         private Image locker;
 
         [SerializeField]
-        private Image border;
-
-        [SerializeField]
-        private Image[] starBorders;
-
-        [SerializeField]
-        private Image[] starFills;
-
-        [SerializeField]
-        private Image progressBarBkg;
-
-        [SerializeField]
-        private Image progressBarFill;
-
-        [SerializeField]
-        private Image progressBarBorder;
+        private Image[] stars;
 
 
         public void Init(int id, ThemeData themeData, GroupData groupData, GroupProgressData progressData)
@@ -45,26 +30,14 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
             }
 
             background.color = themeData.GetColor(ThemeData.ColorEnum.BkgSecond);
-            border.color = themeData.GetColor(ThemeData.ColorEnum.Second);
 
             locked = !progressData.Unlocked;
             locker.enabled = locked;
-
-            progressBarBkg.color = themeData.GetColor(ThemeData.ColorEnum.BkgSecond);
-            progressBarFill.color = themeData.GetColor(ThemeData.ColorEnum.Main);
-            progressBarBorder.color = themeData.GetColor(ThemeData.ColorEnum.Second);
-
-            progressBarFill.fillAmount = CalculateGroupFill(progressData);
-
-            foreach (var starBorder in starBorders)
+            
+            for (int i = 0; i < stars.Length; i++)
             {
-                starBorder.color = themeData.GetColor(ThemeData.ColorEnum.Second);
-            }
-
-            for (int i = 0; i < starFills.Length; i++)
-            {
-                var starFill = starFills[i];
-                starFill.color = themeData.GetColor(i+1 <= CalculateGroupStars(progressData) ? ThemeData.ColorEnum.Main : ThemeData.ColorEnum.BkgSecond);
+                var star = stars[i];
+                star.color = themeData.GetColor(i+1 <= CalculateGroupStars(progressData) ? ThemeData.ColorEnum.Main : ThemeData.ColorEnum.Second);
             }
         }
 
