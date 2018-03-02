@@ -76,7 +76,11 @@ namespace Dev.Krk.MemoryDraw.Game.State
         {
             if (ShouldShowTutorial())
             {
-                if (State == StateEnum.Hidden || State == StateEnum.NextLevel)
+                if (State == StateEnum.Hidden && progressController.MapIndex <= 0)
+                {
+                    State++;
+                }
+                else if(State == StateEnum.NextLevel)
                 {
                     State++;
                 }
@@ -97,8 +101,7 @@ namespace Dev.Krk.MemoryDraw.Game.State
                 }
                 else if(State == StateEnum.RememberPath)
                 {
-                    State = 0;
-                    enabled = false;
+                    State = StateEnum.Hidden;
                 }
             }
         }
