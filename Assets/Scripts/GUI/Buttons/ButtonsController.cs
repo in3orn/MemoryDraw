@@ -137,7 +137,7 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
 
             RectTransform rectTransform = buttonController.GetComponent<RectTransform>();
             rectTransform.SetParent(GetComponent<RectTransform>());
-            rectTransform.anchoredPosition = Vector2.right * spacing * diff;
+            rectTransform.anchoredPosition = new Vector2(spacing * diff, rectTransform.position.y);
 
             RectScaler rectScaler = buttonController.GetComponent<RectScaler>();
             rectScaler.TargetScale = Vector3.one;
@@ -219,8 +219,9 @@ namespace Dev.Krk.MemoryDraw.GUI.Buttons
         {
             int diff = buttonController.Id - currentId;
 
+            RectTransform rectTransform = buttonController.GetComponent<RectTransform>();
             RectMover rectMover = buttonController.GetComponent<RectMover>();
-            rectMover.Target = Vector2.right * spacing * diff;
+            rectMover.Target = new Vector2(spacing * diff, rectTransform.anchoredPosition.y);
         }
 
 
