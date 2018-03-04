@@ -30,6 +30,11 @@ namespace Dev.Krk.MemoryDraw.Game.Animations
         private float breakInterval;
 
 
+        [Header("Complete Level Settings")]
+        [SerializeField]
+        private float completeLevelInterval;
+
+
         private List<Field> updated;
 
 
@@ -60,14 +65,6 @@ namespace Dev.Krk.MemoryDraw.Game.Animations
         private IEnumerator HideShape(List<Field> horizontalFields, List<Field> verticalFields)
         {
             updated.Clear();
-
-            //foreach (var field in horizontalFields)
-            //    field.Hide();
-
-            //yield return new WaitForSeconds(hideInterval);
-
-            //foreach (var field in verticalFields)
-            //    field.Hide();
 
             int min = (int)(Mathf.Min(CalculateLevelMin(horizontalFields), CalculateLevelMin(verticalFields)) / Field.SIZE);
             int max = (int)(Mathf.Max(CalculateLevelMax(horizontalFields), CalculateLevelMax(verticalFields)) / Field.SIZE);
@@ -132,19 +129,7 @@ namespace Dev.Krk.MemoryDraw.Game.Animations
         private IEnumerator BreakFields(List<Field> horizontalFields, List<Field> verticalFields)
         {
             updated.Clear();
-
-            //foreach (var field in verticalFields)
-            //{
-            //    field.Break();
-            //    yield return new WaitForSeconds(breakInterval / (horizontalFields.Count + verticalFields.Count));
-            //}
-
-            //foreach (var field in horizontalFields)
-            //{
-            //    field.Break();
-            //    yield return new WaitForSeconds(breakInterval / (horizontalFields.Count + verticalFields.Count));
-            //}
-
+            
             int min = (int)(Mathf.Min(CalculateLevelMin(horizontalFields), CalculateLevelMin(verticalFields)) / Field.SIZE);
             int max = (int)(Mathf.Max(CalculateLevelMax(horizontalFields), CalculateLevelMax(verticalFields)) / Field.SIZE);
             int size = (max - min) * 2;
@@ -170,6 +155,43 @@ namespace Dev.Krk.MemoryDraw.Game.Animations
                         }
                 }
                 yield return new WaitForSeconds(breakInterval / size);
+            }
+        }
+
+        public void ChangeToOld(List<Field> horizontalFields, List<Field> verticalFields)
+        {
+            StartCoroutine(MakeOld(horizontalFields, verticalFields));
+        }
+
+        private IEnumerator MakeOld(List<Field> horizontalFields, List<Field> verticalFields)
+        {
+            updated.Clear();
+
+            int min = (int)(Mathf.Min(CalculateLevelMin(horizontalFields), CalculateLevelMin(verticalFields)) / Field.SIZE);
+            int max = (int)(Mathf.Max(CalculateLevelMax(horizontalFields), CalculateLevelMax(verticalFields)) / Field.SIZE);
+            int size = (max - min) * 2;
+
+            for (int s = size; s >= 0; s--)
+            {
+                for (int ds = 0; ds < s; ds++)
+                {
+                    int y = min + ds;
+                    int x = min + s - ds - 1;
+                    foreach (var field in horizontalFields)
+                        if (CanUpdate(field, x, y))
+                        {
+                            updated.Add(field);
+                            field.MakeOld();
+                        }
+
+                    foreach (var field in verticalFields)
+                        if (CanUpdate(field, x, y))
+                        {
+                            updated.Add(field);
+                            field.MakeOld();
+                        }
+                }
+                yield return new WaitForSeconds(completeLevelInterval / size);
             }
         }
 

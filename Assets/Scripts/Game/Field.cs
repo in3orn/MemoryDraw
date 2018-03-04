@@ -18,7 +18,8 @@ namespace Dev.Krk.MemoryDraw.Game
             Shown,
             Masked,
             Visited,
-            Broken
+            Broken,
+            Old
         }
 
         private StateEnum state;
@@ -108,7 +109,7 @@ namespace Dev.Krk.MemoryDraw.Game
 
         public void Break()
         {
-            if (State == StateEnum.Masked || State == StateEnum.Shown || State == StateEnum.Visited)
+            if (State == StateEnum.Masked || State == StateEnum.Shown || State == StateEnum.Visited || State == StateEnum.Old)
             {
                 State = StateEnum.Broken;
             }
@@ -118,6 +119,14 @@ namespace Dev.Krk.MemoryDraw.Game
         public void Hide()
         {
             State = StateEnum.Hidden;
+        }
+
+        public void MakeOld()
+        {
+            if (State == StateEnum.Visited)
+            {
+                State = StateEnum.Old;
+            }
         }
     }
 }

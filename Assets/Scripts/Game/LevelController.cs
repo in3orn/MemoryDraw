@@ -229,8 +229,10 @@ namespace Dev.Krk.MemoryDraw.Game
             fieldMap.Clear();
         }
 
-        private void MoveToOld(Field[,] fields, List<Field> oldFields)
+        private List<Field> MoveToOld(Field[,] fields, List<Field> oldFields)
         {
+            List<Field> fieldsToChange = new List<Field>();
+
             for (int y = 0; y < fields.GetLength(0); y++)
             {
                 for (int x = 0; x < fields.GetLength(1); x++)
@@ -241,6 +243,7 @@ namespace Dev.Krk.MemoryDraw.Game
                         if (field.Valid)
                         {
                             oldFields.Add(field);
+                            fieldsToChange.Add(field);
                         }
                         else
                         {
@@ -249,6 +252,8 @@ namespace Dev.Krk.MemoryDraw.Game
                     }
                 }
             }
+
+            return fieldsToChange;
         }
 
         private void InitCenter()
@@ -468,8 +473,10 @@ namespace Dev.Krk.MemoryDraw.Game
         {
             state = StateEnum.Finished;
 
-            MoveToOld(fieldMap.HorizontalFields, oldHorizontalFields);
-            MoveToOld(fieldMap.VerticalFields, oldVerticalFields);
+            List<Field> horizontalFields = MoveToOld(fieldMap.HorizontalFields, oldHorizontalFields);
+            List<Field> verticalFields = MoveToOld(fieldMap.VerticalFields, oldVerticalFields);
+
+            levelAnimator.ChangeToOld(horizontalFields, verticalFields);
 
             fieldMap.HideNotValid();
             HideActors();
