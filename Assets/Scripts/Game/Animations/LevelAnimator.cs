@@ -39,35 +39,62 @@ namespace Dev.Krk.MemoryDraw.Game.Animations
         }
         
 
-        public void CompleteFlow(List<Field> horizontalFields, List<Field> verticalFields, int size)
+        public void CompleteFlow(List<Field> horizontalFields, List<Field> verticalFields)
         {
-            StartCoroutine(AnimateShape(horizontalFields, verticalFields, size));
+            StartCoroutine(AnimateShape(horizontalFields, verticalFields));
         }
 
-        private IEnumerator AnimateShape(List<Field> horizontalFields, List<Field> verticalFields, int size)
+        private IEnumerator AnimateShape(List<Field> horizontalFields, List<Field> verticalFields)
         {
             drawing.Show();
 
             yield return new WaitForSeconds(showDuration);
             
-            yield return HideShape(horizontalFields, verticalFields, size);
+            yield return HideShape(horizontalFields, verticalFields);
 
             yield return new WaitForSeconds(showDuration);
 
             drawing.Hide();
         }
         
-        private IEnumerator HideShape(List<Field> horizontalFields, List<Field> verticalFields, int size)
+        private IEnumerator HideShape(List<Field> horizontalFields, List<Field> verticalFields)
         {
             updated.Clear();
 
-            foreach (var field in horizontalFields)
-                field.Hide();
+            //foreach (var field in horizontalFields)
+            //    field.Hide();
 
-            yield return new WaitForSeconds(hideInterval);
+            //yield return new WaitForSeconds(hideInterval);
 
-            foreach (var field in verticalFields)
-                field.Hide();
+            //foreach (var field in verticalFields)
+            //    field.Hide();
+
+            int min = (int)(Mathf.Min(CalculateLevelMin(horizontalFields), CalculateLevelMin(verticalFields)) / Field.SIZE);
+            int max = (int)(Mathf.Max(CalculateLevelMax(horizontalFields), CalculateLevelMax(verticalFields)) / Field.SIZE);
+            int size = (max - min) * 2;
+
+            for (int s = size; s >= 0; s--)
+            {
+                for (int ds = 0; ds < s; ds++)
+                {
+                    int y = min + ds;
+                    int x = min + s - ds - 1;
+                    foreach (var field in horizontalFields)
+                        if (CanUpdate(field, x, y))
+                        {
+                            updated.Add(field);
+                            field.Hide();
+                        }
+
+                    foreach (var field in verticalFields)
+                        if (CanUpdate(field, x, y))
+                        {
+                            updated.Add(field);
+                            field.Hide();
+                        }
+                }
+                yield return new WaitForSeconds(breakInterval / size);
+            }
         }
 
         private bool CanUpdate(Field field, int x, int y)
@@ -97,21 +124,37 @@ namespace Dev.Krk.MemoryDraw.Game.Animations
         }
 
 
-        public void FailLevel(List<Field> horizontalFields, List<Field> verticalFields, int size)
+        public void FailLevel(List<Field> horizontalFields, List<Field> verticalFields)
         {
-            StartCoroutine(BreakFields(horizontalFields, verticalFields, size));
+            StartCoroutine(BreakFields(horizontalFields, verticalFields));
         }
 
-        private IEnumerator BreakFields(List<Field> horizontalFields, List<Field> verticalFields, int size)
+        private IEnumerator BreakFields(List<Field> horizontalFields, List<Field> verticalFields)
         {
             updated.Clear();
 
-            for (int s = size - 1; s > 0; s--)
+            //foreach (var field in verticalFields)
+            //{
+            //    field.Break();
+            //    yield return new WaitForSeconds(breakInterval / (horizontalFields.Count + verticalFields.Count));
+            //}
+
+            //foreach (var field in horizontalFields)
+            //{
+            //    field.Break();
+            //    yield return new WaitForSeconds(breakInterval / (horizontalFields.Count + verticalFields.Count));
+            //}
+
+            int min = (int)(Mathf.Min(CalculateLevelMin(horizontalFields), CalculateLevelMin(verticalFields)) / Field.SIZE);
+            int max = (int)(Mathf.Max(CalculateLevelMax(horizontalFields), CalculateLevelMax(verticalFields)) / Field.SIZE);
+            int size = (max - min) * 2;
+
+            for (int s = size; s >= 0; s--)
             {
                 for (int ds = 0; ds < s; ds++)
                 {
-                    int y = ds;
-                    int x = s - ds - 1;
+                    int y = min + ds;
+                    int x = min + s - ds - 1;
                     foreach (var field in horizontalFields)
                         if (CanUpdate(field, x, y))
                         {
@@ -128,6 +171,36 @@ namespace Dev.Krk.MemoryDraw.Game.Animations
                 }
                 yield return new WaitForSeconds(breakInterval / size);
             }
+        }
+
+        private float CalculateLevelMin(List<Field> fields)
+        {
+            float min = Mathf.Infinity;
+
+            foreach (var field in fields)
+            {
+                if (min > field.transform.position.x)
+                    min = field.transform.position.x;
+                if (min > field.transform.position.y)
+                    min = field.transform.position.y;
+            }
+
+            return min;
+        }
+
+        private float CalculateLevelMax(List<Field> fields)
+        {
+            float max = Mathf.NegativeInfinity;
+
+            foreach (var field in fields)
+            {
+                if (max < field.transform.position.x)
+                    max = field.transform.position.x;
+                if (max < field.transform.position.y)
+                    max = field.transform.position.y;
+            }
+
+            return max;
         }
     }
 }

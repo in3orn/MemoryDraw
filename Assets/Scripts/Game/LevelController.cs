@@ -484,8 +484,7 @@ namespace Dev.Krk.MemoryDraw.Game
             MoveToOld(fieldMap.HorizontalFields, oldHorizontalFields);
             MoveToOld(fieldMap.VerticalFields, oldVerticalFields);
 
-            int size = fieldMap.HorizontalLength + fieldMap.VerticalLength + (int)offset.x + (int)offset.y + 1; //TODO calculate max
-            levelAnimator.FailLevel(oldHorizontalFields, oldVerticalFields, size);
+            levelAnimator.FailLevel(oldHorizontalFields, oldVerticalFields);
 
             fieldMap.HideNotValid();
             HideActors();
@@ -498,8 +497,7 @@ namespace Dev.Krk.MemoryDraw.Game
 
         public void CompleteFlow()
         {
-            int size = fieldMap.HorizontalLength + fieldMap.VerticalLength + (int)offset.x + (int)offset.y + 1; //TODO calculate max
-            levelAnimator.CompleteFlow(oldHorizontalFields, oldVerticalFields, size);
+            levelAnimator.CompleteFlow(oldHorizontalFields, oldVerticalFields);
 
             center.transform.position = Vector3.zero;
 

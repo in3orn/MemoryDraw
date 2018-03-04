@@ -95,9 +95,13 @@ namespace Dev.Krk.MemoryDraw.Game
 
         public void ProcessPlayerDied()
         {
-            if (livesController.Lives > 0)
+            if (livesController.Lives > 1)
             {
                 livesController.DecreaseLives();
+            }
+            else
+            {
+                levelController.FailLevel();
             }
         }
 

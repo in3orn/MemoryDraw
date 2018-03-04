@@ -160,7 +160,7 @@ namespace Dev.Krk.MemoryDraw.State
 
         private void ProcessLevelFailed()
         {
-            StartCoroutine(ChangeState(StateEnum.Drawings, summary.Show, levelFailedDelay));
+            StartCoroutine(ChangeState(StateEnum.Drawings, null, levelFailedDelay));
         }
 
         private void ProcessResourcesInitialized()
