@@ -625,6 +625,175 @@
 					{"Fields": [0, 0, 0, 0, 0, 0]}
 				]
 			}]
+		},
+		{
+			"Name": "Christmass tree 2",
+			"Image": "christmass-tree",
+			"Maps":[{
+				"Starts": [{
+					"X": 3,
+					"Y": 0
+				},
+				{
+					"X": 2,
+					"Y": 4
+				}],
+				"Finishes": [{
+					"X": 0,
+					"Y": 2
+				},
+				{
+					"X": 3,
+					"Y": 5
+				}],
+				"Offset": {
+					"X": -3.5,
+					"Y": -3.5
+				},
+				"HorizontalFields": [
+					{"Fields": [0, 0, 0]},
+					{"Fields": [1, 1, 1]},
+					{"Fields": [0, 0, 0]},
+					{"Fields": [0, 0, 0]},
+					{"Fields": [0, 0, 1]},
+					{"Fields": [0, 0, 0]}
+				],
+				"VerticalFields": [
+					{"Fields": [0, 0, 0, 1]},
+					{"Fields": [1, 0, 0, 0]},
+					{"Fields": [0, 0, 0, 0]},
+					{"Fields": [0, 0, 0, 0]},
+					{"Fields": [0, 0, 0, 1]}
+				]
+			},
+			{
+				"Starts": [{
+					"X": 0,
+					"Y": 0
+				},
+				{
+					"X": 4,
+					"Y": 0
+				}],
+				"Finishes": [{
+					"X": 3,
+					"Y": 0
+				},
+				{
+					"X": 6,
+					"Y": 3
+				}],
+				"Offset": {
+					"X": -3.5,
+					"Y": -1.5
+				},
+				"HorizontalFields": [
+					{"Fields": [1, 0, 0, 0, 0, 0]},
+					{"Fields": [0, 1, 1, 0, 1, 0]},
+					{"Fields": [0, 0, 0, 0, 0, 0]},
+					{"Fields": [0, 0, 0, 0, 0, 1]}
+				],
+				"VerticalFields": [
+					{"Fields": [0, 1, 0, 1, 1, 0, 0]},
+					{"Fields": [0, 0, 0, 0, 0, 1, 0]},
+					{"Fields": [0, 0, 0, 0, 0, 1, 0]}
+				]
+			},
+			{
+				"Starts": [{
+					"X": 4,
+					"Y": 1
+				},
+				{
+					"X": 2,
+					"Y": 0
+				}],
+				"Finishes": [{
+					"X": 3,
+					"Y": 0
+				},
+				{
+					"X": 2,
+					"Y": 4
+				}],
+				"Offset": {
+					"X": -2.5,
+					"Y": -1.5
+				},
+				"HorizontalFields": [
+					{"Fields": [0, 1, 0, 1]},
+					{"Fields": [0, 0, 0, 0]},
+					{"Fields": [1, 0, 0, 0]},
+					{"Fields": [1, 0, 0, 0]},
+					{"Fields": [0, 1, 0, 0]}
+				],
+				"VerticalFields": [
+					{"Fields": [0, 1, 0, 0, 1]},
+					{"Fields": [0, 1, 0, 0, 0]},
+					{"Fields": [1, 0, 0, 0, 0]},
+					{"Fields": [0, 1, 0, 0, 0]}
+				]
+			},
+			{
+				"Starts": [{
+					"X": 1,
+					"Y": 2
+				},
+				{
+					"X": 1,
+					"Y": 3
+				}],
+				"Finishes": [{
+					"X": 0,
+					"Y": 1
+				},
+				{
+					"X": 4,
+					"Y": 2
+				}],
+				"Offset": {
+					"X": -1.5,
+					"Y": -0.5
+				},
+				"HorizontalFields": [
+					{"Fields": [0, 0, 0, 0]},
+					{"Fields": [0, 0, 1, 1]},
+					{"Fields": [1, 0, 1, 0]},
+					{"Fields": [0, 0, 1, 0]},
+					{"Fields": [0, 1, 0, 0]}
+				],
+				"VerticalFields": [
+					{"Fields": [0, 0, 0, 0, 0]},
+					{"Fields": [1, 0, 1, 0, 1]},
+					{"Fields": [0, 0, 0, 1, 0]},
+					{"Fields": [0, 1, 1, 0, 0]}
+				]
+			},
+			{
+				"Starts": [{
+					"X": 2,
+					"Y": 3
+				}],
+				"Finishes": [{
+					"X": 0,
+					"Y": 0
+				}],
+				"Offset": {
+					"X": -0.5,
+					"Y": -3.5
+				},
+				"HorizontalFields": [
+					{"Fields": [1, 0, 0, 0]},
+					{"Fields": [0, 1, 1, 1]},
+					{"Fields": [0, 0, 0, 1]},
+					{"Fields": [0, 0, 1, 0]}
+				],
+				"VerticalFields": [
+					{"Fields": [0, 1, 0, 0, 0]},
+					{"Fields": [0, 0, 0, 0, 1]},
+					{"Fields": [0, 0, 0, 1, 0]}
+				]
+			}]
 		}]
 	},
 	{
