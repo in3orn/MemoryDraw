@@ -132,7 +132,7 @@ namespace Dev.Krk.MemoryDraw.Game.Animations
             
             int min = (int)(Mathf.Min(CalculateLevelMin(horizontalFields), CalculateLevelMin(verticalFields)) / Field.SIZE);
             int max = (int)(Mathf.Max(CalculateLevelMax(horizontalFields), CalculateLevelMax(verticalFields)) / Field.SIZE);
-            int size = (max - min) * 2;
+            int size = (max - min + 1) * 2;
 
             for (int s = size; s >= 0; s--)
             {
@@ -169,7 +169,7 @@ namespace Dev.Krk.MemoryDraw.Game.Animations
 
             int min = (int)(Mathf.Min(CalculateLevelMin(horizontalFields), CalculateLevelMin(verticalFields)) / Field.SIZE);
             int max = (int)(Mathf.Max(CalculateLevelMax(horizontalFields), CalculateLevelMax(verticalFields)) / Field.SIZE);
-            int size = (max - min) * 2;
+            int size = (max - min + 1) * 2;
 
             for (int s = size; s >= 0; s--)
             {
